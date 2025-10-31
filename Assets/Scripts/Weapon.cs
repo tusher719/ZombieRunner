@@ -33,7 +33,7 @@ public class Weapon : MonoBehaviour
             StartCoroutine(Shoot());
         }
         
-        // Mobile: Shoot button flag
+        // Mobile: Button
         if (shootButtonPressed && canShoot)
         {
             StartCoroutine(Shoot());
@@ -41,7 +41,7 @@ public class Weapon : MonoBehaviour
         }
     }
 
-    // Mobile shoot button এর জন্য
+    // Mobile button এর জন্য
     public void OnShootButtonPressed()
     {
         shootButtonPressed = true;
