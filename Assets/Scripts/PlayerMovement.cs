@@ -2,32 +2,34 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [Header("Mobile Joystick")]
-    public GameObject joystickObject;  // Fixed Joystick drag করবেন
+    [Header("Mobile Joystick Reference")]
+    public Joystick joystick;  // ✅ Direct Joystick reference (not GameObject)
     
     [Header("Movement Settings")]
-    public float walkSpeed = 6f;
-    public float runSpeed = 10f;
-    public float jumpForce = 8f;
-    public float gravity = -20f;
+    public float walkSpeed = 6f;       
+    public float runSpeed = 10f;       
+    public float jumpForce = 8f;       
+    public float gravity = -20f;       
+    public float smoothTime = 0.1f;    
     
     [Header("Ground Check")]
-    public Transform groundCheck;
+    public Transform groundCheck;      
     public float groundDistance = 0.4f;
-    public LayerMask groundMask;
+    public LayerMask groundMask;       
     
-    private MonoBehaviour joystickScript;
+    // Private variables
     private CharacterController controller;
     private Vector3 velocity;
     private bool isGrounded;
     private bool isRunning = false;
-
+    private Vector3 smoothMoveVelocity;
+    
     void Start()
     {
-        // CharacterController get করুন
+        // CharacterController component নিন
         controller = GetComponent<CharacterController>();
         
-        // যদি না থাকে তাহলে add করুন
+        // যদি CharacterController না থাকে তাহলে add করুন
         if (controller == null)
         {
             controller = gameObject.AddComponent<CharacterController>();
@@ -36,13 +38,17 @@ public class PlayerMovement : MonoBehaviour
             controller.center = new Vector3(0, 1, 0);
         }
 
-        // Joystick script get করুন
-        if (joystickObject != null)
+        // Joystick check করুন
+        if (joystick != null)
         {
-            joystickScript = joystickObject.GetComponent<MonoBehaviour>();
+            Debug.Log("✅ Joystick connected!");
+        }
+        else
+        {
+            Debug.LogWarning("⚠️ Joystick is not assigned! Drag Fixed Joystick to PlayerMovement script.");
         }
 
-        // Ground check না থাকলে তৈরি করুন
+        // Ground check object না থাকলে তৈরি করুন
         if (groundCheck == null)
         {
             GameObject groundCheckObj = new GameObject("GroundCheck");
@@ -54,7 +60,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        // Ground check
+        // ========== GROUND CHECK ==========
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
         if (isGrounded && velocity.y < 0)
@@ -62,20 +68,20 @@ public class PlayerMovement : MonoBehaviour
             velocity.y = -2f;
         }
 
-        // Get input
+        // ========== GET INPUT ==========
         float horizontal = 0f;
         float vertical = 0f;
 
-        // Mobile: Joystick input
-        if (joystickScript != null)
+        // ✅ Mobile: Direct joystick access
+        if (joystick != null)
         {
-            var horizontalProp = joystickScript.GetType().GetProperty("Horizontal");
-            var verticalProp = joystickScript.GetType().GetProperty("Vertical");
-
-            if (horizontalProp != null && verticalProp != null)
+            horizontal = joystick.Horizontal;
+            vertical = joystick.Vertical;
+            
+            // Debug log
+            if (horizontal != 0 || vertical != 0)
             {
-                horizontal = (float)horizontalProp.GetValue(joystickScript);
-                vertical = (float)verticalProp.GetValue(joystickScript);
+                Debug.Log($"✅ Joystick Input - H: {horizontal:F2}, V: {vertical:F2}");
             }
         }
         else
@@ -85,38 +91,61 @@ public class PlayerMovement : MonoBehaviour
             vertical = Input.GetAxis("Vertical");
         }
 
-        // Movement direction (camera-relative)
-        Vector3 move = transform.right * horizontal + transform.forward * vertical;
+        // ========== MOVEMENT CALCULATION ==========
+        // Camera-relative movement direction
+        Vector3 moveDirection = transform.right * horizontal + transform.forward * vertical;
+        
+        // Normalize করুন
+        if (moveDirection.magnitude > 1f)
+        {
+            moveDirection.Normalize();
+        }
 
         // Current speed
         float currentSpeed = isRunning ? runSpeed : walkSpeed;
 
+        // Smooth movement
+        Vector3 targetVelocity = moveDirection * currentSpeed;
+        Vector3 smoothMove = Vector3.SmoothDamp(controller.velocity, targetVelocity, ref smoothMoveVelocity, smoothTime);
+        
         // Move character
-        controller.Move(move * currentSpeed * Time.deltaTime);
+        controller.Move(smoothMove * Time.deltaTime);
 
-        // PC Jump (Space key)
+        // ========== JUMP ==========
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
             velocity.y = Mathf.Sqrt(jumpForce * -2f * gravity);
         }
 
-        // Apply gravity
+        // ========== GRAVITY ==========
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
     }
 
-    // Mobile Jump button এর জন্য
+    // ========== PUBLIC METHODS ==========
+    
     public void Jump()
     {
         if (isGrounded)
         {
             velocity.y = Mathf.Sqrt(jumpForce * -2f * gravity);
+            Debug.Log("🔼 Jump!");
         }
     }
 
-    // Run toggle (optional - run button এর জন্য)
     public void SetRunning(bool running)
     {
         isRunning = running;
+    }
+
+    // ========== DEBUG VISUALIZATION ==========
+    
+    void OnDrawGizmosSelected()
+    {
+        if (groundCheck != null)
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireSphere(groundCheck.position, groundDistance);
+        }
     }
 }

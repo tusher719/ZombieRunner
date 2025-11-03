@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
+
 public class Weapon : MonoBehaviour
 {
     [SerializeField] Camera FPCamera;
@@ -26,14 +27,14 @@ public class Weapon : MonoBehaviour
     void Update()
     {
         DisplayAmmo();
-        
-        // PC: Mouse input
+    
+        // PC: Mouse click
         if (Input.GetMouseButtonDown(0) && canShoot)
         {
             StartCoroutine(Shoot());
         }
         
-        // Mobile: Button
+        // Mobile: Shoot button flag
         if (shootButtonPressed && canShoot)
         {
             StartCoroutine(Shoot());
@@ -45,6 +46,7 @@ public class Weapon : MonoBehaviour
     public void OnShootButtonPressed()
     {
         shootButtonPressed = true;
+        Debug.Log("🔫 Shoot button pressed!");
     }
 
     private void DisplayAmmo()
