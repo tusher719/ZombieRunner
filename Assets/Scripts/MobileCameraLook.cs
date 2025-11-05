@@ -5,17 +5,16 @@ public class MobileCameraLook : MonoBehaviour
 {
     [Header("References")]
     public Transform playerBody;             
-    public RigidbodyFirstPersonController fpsController;  // ✅ Original controller
+    public RigidbodyFirstPersonController fpsController;
     
     [Header("Sensitivity")]
-    public float pcSensitivity = 2f;         // PC mouse sensitivity
-    public float touchSensitivity = 1f;      // Mobile touch sensitivity
+    public float pcSensitivity = 2f;
+    public float touchSensitivity = 1f;
     
     [Header("Rotation Limits")]
     public float minVerticalAngle = -80f;    
-    public float maxVerticalAngle = 80f;     
+    public float maxVerticalAngle = 80f;
 
-    // Private variables
     private float xRotation = 0f;
     private Vector2 lastTouchPosition;
     private bool isTouching = false;
@@ -29,24 +28,23 @@ public class MobileCameraLook : MonoBehaviour
             Debug.LogError("❌ Player Body not assigned!");
         }
 
-        // Check if mobile platform
         #if UNITY_ANDROID || UNITY_IOS
             isMobile = true;
+            // ✅ Enable multi-touch
+            Input.multiTouchEnabled = true;
         #endif
 
-        // PC এ original MouseLook ব্যবহার করুন
         if (!isMobile && fpsController != null)
         {
             fpsController.mouseLook.XSensitivity = pcSensitivity;
             fpsController.mouseLook.YSensitivity = pcSensitivity;
-            this.enabled = false;  // এই script disable করুন
+            this.enabled = false;
             Debug.Log("🖱️ Using original MouseLook for PC");
         }
     }
 
     void Update()
     {
-        // শুধু mobile এ এই script কাজ করবে
         if (isMobile)
         {
             HandleMobileCameraRotation();
@@ -58,26 +56,32 @@ public class MobileCameraLook : MonoBehaviour
         float mouseX = 0f;
         float mouseY = 0f;
 
-        // ========== MOBILE: TOUCH INPUT ==========
+        // ✅✅✅ FIXED: Check all touches, find right side touch
         if (Input.touchCount > 0)
         {
             for (int i = 0; i < Input.touchCount; i++)
             {
                 Touch touch = Input.GetTouch(i);
 
-                // ✅ Screen এর ডান দিকে (40% এর বেশি) touch নিন
+                // ✅ Screen এর ডান দিকে (40% এর বেশি) touch check
                 bool isRightSide = touch.position.x > Screen.width * 0.4f;
 
-                if (!isRightSide) continue;
+                if (!isRightSide) continue; // Left side ignore করুন
 
+                // ✅ Began phase
                 if (touch.phase == TouchPhase.Began)
                 {
-                    lastTouchPosition = touch.position;
-                    isTouching = true;
-                    activeTouchId = touch.fingerId;
-                    Debug.Log($"👆 Touch began at: {touch.position}");
+                    // যদি already active touch না থাকে তাহলে এটা নিন
+                    if (activeTouchId == -1)
+                    {
+                        lastTouchPosition = touch.position;
+                        isTouching = true;
+                        activeTouchId = touch.fingerId;
+                        Debug.Log($"👆 Camera touch started: ID {activeTouchId}");
+                    }
                 }
-                else if (touch.phase == TouchPhase.Moved && isTouching && touch.fingerId == activeTouchId)
+                // ✅ Moved phase
+                else if (touch.phase == TouchPhase.Moved && touch.fingerId == activeTouchId)
                 {
                     Vector2 delta = touch.position - lastTouchPosition;
                     
@@ -85,31 +89,26 @@ public class MobileCameraLook : MonoBehaviour
                     mouseY = delta.y * touchSensitivity * 0.1f;
 
                     lastTouchPosition = touch.position;
-                    
-                    Debug.Log($"📱 Camera moving - X: {mouseX:F2}, Y: {mouseY:F2}");
                 }
-                else if (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled)
+                // ✅ Ended phase
+                else if ((touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled) 
+                         && touch.fingerId == activeTouchId)
                 {
-                    if (touch.fingerId == activeTouchId)
-                    {
-                        isTouching = false;
-                        activeTouchId = -1;
-                        Debug.Log("👋 Touch ended");
-                    }
+                    isTouching = false;
+                    activeTouchId = -1;
+                    Debug.Log("👋 Camera touch ended");
+                    break; // Exit loop
                 }
             }
         }
 
-        // ========== APPLY ROTATION ==========
+        // ✅ Apply rotation
         if (playerBody != null && (mouseX != 0 || mouseY != 0))
         {
-            // Vertical rotation (Camera up/down)
             xRotation -= mouseY;
             xRotation = Mathf.Clamp(xRotation, minVerticalAngle, maxVerticalAngle);
 
             transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
-            
-            // Horizontal rotation (Player left/right)
             playerBody.Rotate(Vector3.up * mouseX);
         }
     }

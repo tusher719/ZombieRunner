@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-
+using UnityEngine.EventSystems;
 
 public class Weapon : MonoBehaviour
 {
@@ -27,14 +27,16 @@ public class Weapon : MonoBehaviour
     void Update()
     {
         DisplayAmmo();
-    
-        // PC: Mouse click
-        if (Input.GetMouseButtonDown(0) && canShoot)
+
+        // ✅ PC only mouse shooting
+        #if UNITY_EDITOR || UNITY_STANDALONE
+        if (Input.GetMouseButtonDown(0) && canShoot && !IsPointerOverUIElement())
         {
             StartCoroutine(Shoot());
         }
+        #endif
         
-        // Mobile: Shoot button flag
+        // ✅ Mobile: button only
         if (shootButtonPressed && canShoot)
         {
             StartCoroutine(Shoot());
@@ -42,7 +44,13 @@ public class Weapon : MonoBehaviour
         }
     }
 
-    // Mobile button এর জন্য
+    // ✅ Check if touching UI element
+    private bool IsPointerOverUIElement()
+    {
+        return EventSystem.current != null && EventSystem.current.IsPointerOverGameObject();
+    }
+
+    // ✅ Mobile shoot button থেকে call হবে
     public void OnShootButtonPressed()
     {
         shootButtonPressed = true;

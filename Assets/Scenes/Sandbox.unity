@@ -772,6 +772,67 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 296914958174317991, guid: ccb862f868fb69c42a11b87fd735fd77, type: 3}
   m_PrefabInstance: {fileID: 5638258697762192805}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &95703055
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 228d47a30d14c044c885897dee9341c6, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 46.26087
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 228d47a30d14c044c885897dee9341c6, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.50001144
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 228d47a30d14c044c885897dee9341c6, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 7.374347
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 228d47a30d14c044c885897dee9341c6, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 228d47a30d14c044c885897dee9341c6, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 228d47a30d14c044c885897dee9341c6, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 228d47a30d14c044c885897dee9341c6, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 228d47a30d14c044c885897dee9341c6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 228d47a30d14c044c885897dee9341c6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 228d47a30d14c044c885897dee9341c6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 228d47a30d14c044c885897dee9341c6, type: 3}
+      propertyPath: m_Name
+      value: Remy@Zombie Running
+      objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: 228d47a30d14c044c885897dee9341c6, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: e2cf68ff4b1ffda45a77f7307dd789b9, type: 2}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 228d47a30d14c044c885897dee9341c6, type: 3}
 --- !u!1001 &110561168
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3145,7 +3206,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 434f28e879a3b5a449aba2a5b48dfe6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  joystick: {fileID: 0}
+  joystick: {fileID: 1407785380}
   walkSpeed: 8
   runSpeed: 12
   jumpForce: 8
@@ -8344,6 +8405,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2929252283123773938, guid: aaa2c939c0359ac4dbce3f49e8b90252, type: 3}
   m_PrefabInstance: {fileID: 1407785378}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1407785380 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2929252283123773951, guid: aaa2c939c0359ac4dbce3f49e8b90252, type: 3}
+  m_PrefabInstance: {fileID: 1407785378}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45977bbae16431c46a013576a1aea384, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1413945452
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10099,9 +10171,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerBody: {fileID: 0}
   fpsController: {fileID: 190989321}
-  touchSensitivity: 1
   pcSensitivity: 2
-  smoothFactor: 0.5
+  touchSensitivity: 1
   minVerticalAngle: -80
   maxVerticalAngle: 80
 --- !u!4 &1717491255 stripped
@@ -12416,3 +12487,4 @@ SceneRoots:
   - {fileID: 18024850}
   - {fileID: 765830697}
   - {fileID: 783690643}
+  - {fileID: 95703055}
