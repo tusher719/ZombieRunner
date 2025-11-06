@@ -12,6 +12,7 @@ public class PlayerHealth : MonoBehaviour
     {
         UpdateHealthUI();
     }
+
     public void TakeDamage(float damage)
     {
         hitPoints -= damage;
@@ -30,5 +31,16 @@ public class PlayerHealth : MonoBehaviour
         {
             hitPointsText.text = Mathf.Max(hitPoints, 0).ToString("0");
         }
+    }
+
+    // Methods for HealthDisplay
+    public float GetHealth()
+    {
+        return Mathf.Max(hitPoints, 0);  // Never return negative
+    }
+
+    public float GetMaxHealth()
+    {
+        return 100f;  // Will be updated to match initial hitPoints
     }
 }
