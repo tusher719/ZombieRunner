@@ -3,22 +3,50 @@ using UnityStandardAssets.Characters.FirstPerson;
 
 public class MobileJumpButton : MonoBehaviour
 {
-    private RigidbodyFirstPersonController playerController;
+    private RigidbodyFirstPersonController fpsController;
+    private Rigidbody playerRigidbody;
+    
+    [Header("Settings")]
+    public float jumpForce = 30f;  // Default FPS controller jump force
 
     void Start()
     {
-        playerController = FindObjectOfType<RigidbodyFirstPersonController>();
+        // Find FPS Controller
+        fpsController = FindObjectOfType<RigidbodyFirstPersonController>();
+        
+        if (fpsController != null)
+        {
+            playerRigidbody = fpsController.GetComponent<Rigidbody>();
+            jumpForce = fpsController.movementSettings.JumpForce;  // Use controller's jump force
+            Debug.Log($"✅ Jump button connected! Jump Force: {jumpForce}");
+        }
+        else
+        {
+            Debug.LogError("❌ RigidbodyFirstPersonController not found!");
+        }
     }
 
-    // UI Button থেকে এই method call করবেন
+    // Called from UI button
     public void OnJumpPressed()
     {
-        if (playerController != null && playerController.Grounded)
+        // Check if grounded using FPS controller
+        if (fpsController != null && fpsController.Grounded && playerRigidbody != null)
         {
-            // Jump করো
-            Rigidbody rb = playerController.GetComponent<Rigidbody>();
-            rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
-            rb.AddForce(new Vector3(0f, playerController.movementSettings.JumpForce, 0f), ForceMode.Impulse);
+            // Reset vertical velocity
+            playerRigidbody.velocity = new Vector3(
+                playerRigidbody.velocity.x, 
+                0f, 
+                playerRigidbody.velocity.z
+            );
+            
+            // Apply jump force
+            playerRigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            
+            Debug.Log("🔼 Jump! Force: " + jumpForce);
+        }
+        else
+        {
+            Debug.Log("⚠️ Cannot jump - not grounded or controller missing");
         }
     }
 }

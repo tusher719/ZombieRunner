@@ -9,15 +9,18 @@ public class MobileCameraLook : MonoBehaviour
     
     [Header("Sensitivity")]
     public float pcSensitivity = 2f;
-    public float touchSensitivity = 1f;
+    public float touchSensitivity = 1.2f;  // Slightly increased for smoothness
     
     [Header("Rotation Limits")]
     public float minVerticalAngle = -80f;    
     public float maxVerticalAngle = 80f;
+    
+    [Header("Touch Area")]
+    [Range(0f, 1f)]
+    public float joystickAreaWidth = 0.35f;  // 35% left = joystick area
 
     private float xRotation = 0f;
     private Vector2 lastTouchPosition;
-    private bool isTouching = false;
     private int activeTouchId = -1;
     private bool isMobile = false;
 
@@ -30,8 +33,8 @@ public class MobileCameraLook : MonoBehaviour
 
         #if UNITY_ANDROID || UNITY_IOS
             isMobile = true;
-            // ✅ Enable multi-touch
             Input.multiTouchEnabled = true;
+            Debug.Log("📱 Mobile multi-touch enabled");
         #endif
 
         if (!isMobile && fpsController != null)
@@ -55,60 +58,60 @@ public class MobileCameraLook : MonoBehaviour
     {
         float mouseX = 0f;
         float mouseY = 0f;
+        bool foundValidTouch = false;
 
-        // ✅✅✅ FIXED: Check all touches, find right side touch
         if (Input.touchCount > 0)
         {
-            for (int i = 0; i < Input.touchCount; i++)
+            // Process all touches to find camera touch
+            foreach (Touch touch in Input.touches)
             {
-                Touch touch = Input.GetTouch(i);
-
-                // ✅ Screen এর ডান দিকে (40% এর বেশি) touch check
-                bool isRightSide = touch.position.x > Screen.width * 0.4f;
-
-                if (!isRightSide) continue; // Left side ignore করুন
-
-                // ✅ Began phase
-                if (touch.phase == TouchPhase.Began)
+                // Calculate if touch is on right side
+                float touchXNormalized = touch.position.x / Screen.width;
+                bool isRightSide = touchXNormalized > joystickAreaWidth;
+                
+                // Only process right side touches
+                if (isRightSide)
                 {
-                    // যদি already active touch না থাকে তাহলে এটা নিন
-                    if (activeTouchId == -1)
+                    // New touch began
+                    if (touch.phase == TouchPhase.Began && activeTouchId == -1)
                     {
-                        lastTouchPosition = touch.position;
-                        isTouching = true;
                         activeTouchId = touch.fingerId;
-                        Debug.Log($"👆 Camera touch started: ID {activeTouchId}");
+                        lastTouchPosition = touch.position;
+                        foundValidTouch = true;
+                        Debug.Log($"📷 Camera touch started: {activeTouchId}");
                     }
-                }
-                // ✅ Moved phase
-                else if (touch.phase == TouchPhase.Moved && touch.fingerId == activeTouchId)
-                {
-                    Vector2 delta = touch.position - lastTouchPosition;
-                    
-                    mouseX = delta.x * touchSensitivity * 0.1f;
-                    mouseY = delta.y * touchSensitivity * 0.1f;
-
-                    lastTouchPosition = touch.position;
-                }
-                // ✅ Ended phase
-                else if ((touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled) 
-                         && touch.fingerId == activeTouchId)
-                {
-                    isTouching = false;
-                    activeTouchId = -1;
-                    Debug.Log("👋 Camera touch ended");
-                    break; // Exit loop
+                    // Our active touch is moving
+                    else if (touch.fingerId == activeTouchId && touch.phase == TouchPhase.Moved)
+                    {
+                        Vector2 delta = touch.position - lastTouchPosition;
+                        
+                        // Calculate rotation with smoothing
+                        mouseX = delta.x * touchSensitivity * 0.1f;
+                        mouseY = delta.y * touchSensitivity * 0.1f;
+                        
+                        lastTouchPosition = touch.position;
+                        foundValidTouch = true;
+                    }
+                    // Touch ended
+                    else if (touch.fingerId == activeTouchId && 
+                            (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled))
+                    {
+                        activeTouchId = -1;
+                        Debug.Log("📷 Camera touch ended");
+                    }
                 }
             }
         }
 
-        // ✅ Apply rotation
-        if (playerBody != null && (mouseX != 0 || mouseY != 0))
+        // Apply rotation smoothly
+        if (playerBody != null && foundValidTouch && (Mathf.Abs(mouseX) > 0.001f || Mathf.Abs(mouseY) > 0.001f))
         {
+            // Vertical rotation (camera up/down)
             xRotation -= mouseY;
             xRotation = Mathf.Clamp(xRotation, minVerticalAngle, maxVerticalAngle);
-
             transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+            
+            // Horizontal rotation (player turn)
             playerBody.Rotate(Vector3.up * mouseX);
         }
     }

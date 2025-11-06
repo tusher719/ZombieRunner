@@ -35,7 +35,7 @@ public class PlayerMovement : MonoBehaviour
             controller = gameObject.AddComponent<CharacterController>();
             controller.height = 2f;
             controller.radius = 0.5f;
-            controller.center = new Vector3(0, 0, 0);
+            controller.center = new Vector3(0, 1, 0);
         }
 
         // Joystick check

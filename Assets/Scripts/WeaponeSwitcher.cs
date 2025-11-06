@@ -6,9 +6,13 @@ public class WeaponeSwitcher : MonoBehaviour
 {
     [SerializeField] int currentWeapon = 0;
 
+    // Add this at the top of the class
+    private MobileWeaponZoom mobileZoom;
+
     void Start()
     {
         SetWeaponActive();
+        mobileZoom = FindObjectOfType<MobileWeaponZoom>();
     }
 
     void Update()
@@ -20,9 +24,14 @@ public class WeaponeSwitcher : MonoBehaviour
 
         if (previousWeapon != currentWeapon)
         {
+            // Auto zoom out when switching weapons
+            if (mobileZoom != null && mobileZoom.IsZoomed())
+            {
+                mobileZoom.ForceZoomOut();
+            }
+            
             SetWeaponActive();
         }
-        
     }
     private void ProcessScrollWheel()
     {
@@ -69,19 +78,64 @@ public class WeaponeSwitcher : MonoBehaviour
     private void SetWeaponActive()
     {
         int weaponIndex = 0;
+    
         foreach (Transform weapon in transform)
         {
             if (weaponIndex == currentWeapon)
             {
+                // Activate current weapon
                 weapon.gameObject.SetActive(true);
+                
+                // Ensure weapon component is enabled and ready
+                Weapon weaponScript = weapon.GetComponent<Weapon>();
+                if (weaponScript != null)
+                {
+                    weaponScript.enabled = true;
+                }
+                
+                Debug.Log($"✅ Switched to: {weapon.name}");
             }
             else
             {
+                // Deactivate other weapons
                 weapon.gameObject.SetActive(false);
             }
             weaponIndex++;
         }
     }
 
+    // ✅ Mobile buttons এর জন্য add করো
+    public void SwitchToNextWeapon()
+    {
+        // Auto zoom out before switching
+        if (mobileZoom != null && mobileZoom.IsZoomed())
+        {
+            mobileZoom.ForceZoomOut();
+        }
+
+        currentWeapon++;
+        if (currentWeapon >= transform.childCount)
+        {
+            currentWeapon = 0;
+        }
+        SetWeaponActive();
+    }
+
+    public void SwitchToPreviousWeapon()
+    {
+        // Auto zoom out before switching
+        if (mobileZoom != null && mobileZoom.IsZoomed())
+        {
+            mobileZoom.ForceZoomOut();
+        }
+        
+        currentWeapon--;
+        if (currentWeapon < 0)
+        {
+            currentWeapon = transform.childCount - 1;
+        }
+        SetWeaponActive();
+    }
     
 }
+

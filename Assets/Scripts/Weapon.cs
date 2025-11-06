@@ -18,17 +18,47 @@ public class Weapon : MonoBehaviour
 
     bool canShoot = true;
     private bool shootButtonPressed = false;
+    private bool isWeaponReady = false;  // New flag
 
     private void OnEnable()
     {
+        StartCoroutine(InitializeWeapon());
+    }
+
+    private IEnumerator InitializeWeapon()
+    {
+        // Reset states
+        canShoot = false;
+        shootButtonPressed = false;
+        isWeaponReady = false;
+        
+        Debug.Log($"🔧 Initializing {gameObject.name}...");
+        
+        // Wait a frame to ensure everything is set up
+        yield return null;
+        
+        // Now weapon is ready
         canShoot = true;
+        isWeaponReady = true;
+        
+        Debug.Log($"✅ {gameObject.name} ready to fire!");
+    }
+
+    private void OnDisable()
+    {
+        // Cleanup when weapon is disabled
+        isWeaponReady = false;
+        canShoot = false;
+        shootButtonPressed = false;
     }
 
     void Update()
     {
+        if (!isWeaponReady) return;  // Don't do anything if weapon not ready
+        
         DisplayAmmo();
 
-        // ✅ PC only mouse shooting
+        // PC only mouse shooting
         #if UNITY_EDITOR || UNITY_STANDALONE
         if (Input.GetMouseButtonDown(0) && canShoot && !IsPointerOverUIElement())
         {
@@ -36,25 +66,31 @@ public class Weapon : MonoBehaviour
         }
         #endif
         
-        // ✅ Mobile: button only
+        // Mobile: button only
         if (shootButtonPressed && canShoot)
         {
+            Debug.Log($"🔫 Firing {gameObject.name} - Ammo: {ammoSlot.GetAmmoAmount(ammoType)}");
             StartCoroutine(Shoot());
             shootButtonPressed = false;
         }
     }
 
-    // ✅ Check if touching UI element
     private bool IsPointerOverUIElement()
     {
         return EventSystem.current != null && EventSystem.current.IsPointerOverGameObject();
     }
 
-    // ✅ Mobile shoot button থেকে call হবে
     public void OnShootButtonPressed()
     {
-        shootButtonPressed = true;
-        Debug.Log("🔫 Shoot button pressed!");
+        if (isWeaponReady && canShoot)
+        {
+            shootButtonPressed = true;
+            Debug.Log($"📱 Shoot pressed on {gameObject.name} (Ready: {isWeaponReady}, CanShoot: {canShoot})");
+        }
+        else
+        {
+            Debug.LogWarning($"⚠️ Cannot shoot {gameObject.name} - Ready: {isWeaponReady}, CanShoot: {canShoot}");
+        }
     }
 
     private void DisplayAmmo()
@@ -66,12 +102,19 @@ public class Weapon : MonoBehaviour
     IEnumerator Shoot()
     {
         canShoot = false;
+        
         if (ammoSlot.GetAmmoAmount(ammoType) > 0)
         {
             PlayMuzzleFlash();
             ProcessRaycast();
             ammoSlot.ReduceCurrentAmmo(ammoType);
+            Debug.Log($"💥 Shot fired! Remaining ammo: {ammoSlot.GetAmmoAmount(ammoType)}");
         }
+        else
+        {
+            Debug.Log("⚠️ No ammo!");
+        }
+        
         yield return new WaitForSeconds(timeBetweenShots);
         canShoot = true;
     }
