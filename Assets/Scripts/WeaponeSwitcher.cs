@@ -5,8 +5,6 @@ using UnityEngine;
 public class WeaponeSwitcher : MonoBehaviour
 {
     [SerializeField] int currentWeapon = 0;
-
-    // Add this at the top of the class
     private MobileWeaponZoom mobileZoom;
 
     void Start()
@@ -33,6 +31,7 @@ public class WeaponeSwitcher : MonoBehaviour
             SetWeaponActive();
         }
     }
+
     private void ProcessScrollWheel()
     {
         if (Input.GetAxis("Mouse ScrollWheel") < 0)
@@ -92,8 +91,6 @@ public class WeaponeSwitcher : MonoBehaviour
                 {
                     weaponScript.enabled = true;
                 }
-                
-                Debug.Log($"✅ Switched to: {weapon.name}");
             }
             else
             {
@@ -104,7 +101,7 @@ public class WeaponeSwitcher : MonoBehaviour
         }
     }
 
-    // ✅ Mobile buttons এর জন্য add করো
+    // Mobile buttons methods
     public void SwitchToNextWeapon()
     {
         // Auto zoom out before switching
@@ -136,6 +133,4 @@ public class WeaponeSwitcher : MonoBehaviour
         }
         SetWeaponActive();
     }
-    
 }
-

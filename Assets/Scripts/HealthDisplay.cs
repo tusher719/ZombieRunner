@@ -10,8 +10,8 @@ public class HealthDisplay : MonoBehaviour
     public TextMeshProUGUI healthText;
     
     [Header("Colors")]
-    public Color fullHealthColor = Color.green;
-    public Color lowHealthColor = Color.red;
+    public Color fullHealthColor;
+    public Color lowHealthColor;
     [Range(0, 100)]
     public float lowHealthThreshold = 30f;
     
@@ -32,15 +32,13 @@ public class HealthDisplay : MonoBehaviour
 
         if (playerHealth == null)
         {
-            Debug.LogError("❌ PlayerHealth not found!");
+            Debug.LogError("PlayerHealth not found!");
             return;
         }
 
         // Get initial max health from PlayerHealth current value
         maxHealth = playerHealth.GetHealth();
         targetFillAmount = 1f;
-        
-        Debug.Log($"✅ Health Display initialized - Max Health: {maxHealth}");
         
         UpdateHealthDisplay();
     }
@@ -99,7 +97,7 @@ public class HealthDisplay : MonoBehaviour
         if (healthText != null)
         {
             int displayHealth = Mathf.RoundToInt(currentHealth);
-            healthText.text = $"Health: {displayHealth}";
+            healthText.text = $"{displayHealth}";
         }
     }
 }

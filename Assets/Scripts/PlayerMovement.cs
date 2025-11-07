@@ -6,28 +6,26 @@ public class PlayerMovement : MonoBehaviour
     public Joystick joystick;  
     
     [Header("Movement Settings")]
-    public float walkSpeed = 8f;              // ✅ Speed বাড়ালাম
-    public float runSpeed = 12f;              
-    public float jumpForce = 8f;       
-    public float gravity = -20f;       
-    public float rotationSpeed = 10f;         // ✅ Rotation smooth করার জন্য
-    public float acceleration = 10f;          // ✅ Acceleration speed
+    public float walkSpeed = 8f;
+    public float runSpeed = 12f;
+    public float jumpForce = 8f;
+    public float gravity = -20f;
+    public float acceleration = 10f;
     
     [Header("Ground Check")]
-    public Transform groundCheck;      
+    public Transform groundCheck;
     public float groundDistance = 0.4f;
-    public LayerMask groundMask;       
+    public LayerMask groundMask;
     
-    // Private variables
     private CharacterController controller;
     private Vector3 velocity;
-    private Vector3 currentVelocity;          // ✅ Current movement velocity
+    private Vector3 currentVelocity;
     private bool isGrounded;
     private bool isRunning = false;
-    
+    private bool isMobile = false;
+
     void Start()
     {
-        // CharacterController setup
         controller = GetComponent<CharacterController>();
         
         if (controller == null)
@@ -35,20 +33,14 @@ public class PlayerMovement : MonoBehaviour
             controller = gameObject.AddComponent<CharacterController>();
             controller.height = 2f;
             controller.radius = 0.5f;
-            controller.center = new Vector3(0, 1, 0);
+            controller.center = new Vector3(0, 0, 0);
         }
 
-        // Joystick check
-        if (joystick != null)
-        {
-            Debug.Log("✅ Joystick connected!");
-        }
-        else
-        {
-            Debug.LogWarning("⚠️ Joystick not assigned!");
-        }
+        // Check if mobile platform
+        #if UNITY_ANDROID || UNITY_IOS
+            isMobile = true;
+        #endif
 
-        // Ground check setup
         if (groundCheck == null)
         {
             GameObject groundCheckObj = new GameObject("GroundCheck");
@@ -60,7 +52,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        // ========== GROUND CHECK ==========
+        // Ground check
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
         if (isGrounded && velocity.y < 0)
@@ -68,62 +60,55 @@ public class PlayerMovement : MonoBehaviour
             velocity.y = -2f;
         }
 
-        // ========== GET INPUT ==========
+        // Get input
         float horizontal = 0f;
         float vertical = 0f;
 
-        // Mobile: Joystick input
-        if (joystick != null)
+        // Mobile: Use joystick if mobile platform AND joystick exists
+        if (isMobile && joystick != null)
         {
             horizontal = joystick.Horizontal;
             vertical = joystick.Vertical;
         }
         else
         {
-            // PC: Keyboard input
+            // PC: Always use keyboard
             horizontal = Input.GetAxis("Horizontal");
             vertical = Input.GetAxis("Vertical");
         }
 
-        // ========== MOVEMENT CALCULATION ==========
-        // Camera-relative direction
+        // Movement calculation
         Vector3 moveDirection = transform.right * horizontal + transform.forward * vertical;
         
-        // Normalize to prevent faster diagonal movement
         if (moveDirection.magnitude > 1f)
         {
             moveDirection.Normalize();
         }
 
-        // Current speed
         float currentSpeed = isRunning ? runSpeed : walkSpeed;
 
-        // ✅ Smooth acceleration using Lerp
         Vector3 targetVelocity = moveDirection * currentSpeed;
         currentVelocity = Vector3.Lerp(currentVelocity, targetVelocity, acceleration * Time.deltaTime);
         
-        // Move character
         controller.Move(currentVelocity * Time.deltaTime);
 
-        // ========== JUMP ==========
+        // Jump (PC: Space key)
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
             velocity.y = Mathf.Sqrt(jumpForce * -2f * gravity);
         }
 
-        // ========== GRAVITY ==========
+        // Gravity
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
     }
 
-    // ========== PUBLIC METHODS ==========
-    
+    // Mobile jump button method
     public void Jump()
     {
         if (isGrounded)
         {
             velocity.y = Mathf.Sqrt(jumpForce * -2f * gravity);
-            Debug.Log("🔼 Jump!");
         }
     }
 
@@ -132,8 +117,6 @@ public class PlayerMovement : MonoBehaviour
         isRunning = running;
     }
 
-    // ========== DEBUG ==========
-    
     void OnDrawGizmosSelected()
     {
         if (groundCheck != null)

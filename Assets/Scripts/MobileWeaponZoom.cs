@@ -14,7 +14,7 @@ public class MobileWeaponZoom : MonoBehaviour
     public float zoomedInSensitivity = 0.5f;
     
     private bool isZoomed = false;
-    private WeaponZoom currentWeaponZoom;  // PC zoom script reference
+    private WeaponZoom currentWeaponZoom;
 
     void Start()
     {
@@ -27,8 +27,6 @@ public class MobileWeaponZoom : MonoBehaviour
         {
             fpsController = FindObjectOfType<RigidbodyFirstPersonController>();
         }
-        
-        Debug.Log("✅ Mobile zoom connected!");
     }
 
     void Update()
@@ -58,7 +56,7 @@ public class MobileWeaponZoom : MonoBehaviour
     // Called from UI button
     public void OnZoomPressed()
     {
-        // Check if current weapon has zoom capability (PC zoom script)
+        // Check if current weapon has zoom capability
         if (currentWeaponZoom != null)
         {
             isZoomed = !isZoomed;
@@ -71,10 +69,6 @@ public class MobileWeaponZoom : MonoBehaviour
             {
                 ZoomOut();
             }
-        }
-        else
-        {
-            Debug.Log("⚠️ Current weapon cannot zoom!");
         }
     }
 
@@ -91,7 +85,7 @@ public class MobileWeaponZoom : MonoBehaviour
             fpsController.mouseLook.YSensitivity = zoomedInSensitivity;
         }
         
-        Debug.Log("🔍 Zoom IN");
+        isZoomed = true;
     }
 
     void ZoomOut()
@@ -108,7 +102,6 @@ public class MobileWeaponZoom : MonoBehaviour
         }
         
         isZoomed = false;
-        Debug.Log("🔍 Zoom OUT");
     }
     
     // Called when weapon switches

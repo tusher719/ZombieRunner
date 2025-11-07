@@ -12,11 +12,7 @@ public class MobileWeaponSwitcher : MonoBehaviour
         
         if (weaponSwitcher == null)
         {
-            Debug.LogError("❌ WeaponeSwitcher not found!");
-        }
-        else
-        {
-            Debug.Log("✅ Weapon switcher connected!");
+            Debug.LogError("WeaponeSwitcher not found!");
         }
     }
 
@@ -33,7 +29,6 @@ public class MobileWeaponSwitcher : MonoBehaviour
             
             // Switch to next weapon
             weaponSwitcher.SwitchToNextWeapon();
-            Debug.Log("🔄 Weapon switched");
         }
     }
 }

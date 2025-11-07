@@ -11,11 +11,7 @@ public class MobileShootButton : MonoBehaviour
         
         if (weaponsParent == null)
         {
-            Debug.LogError("❌ Weapons parent not found!");
-        }
-        else
-        {
-            Debug.Log("✅ Mobile shoot button connected!");
+            Debug.LogError("Weapons parent not found!");
         }
     }
 
@@ -34,7 +30,6 @@ public class MobileShootButton : MonoBehaviour
                 activeWeapon = weapon.GetComponent<Weapon>();
                 if (activeWeapon != null)
                 {
-                    Debug.Log($"📱 Found active weapon: {weapon.name}");
                     break;
                 }
             }
@@ -44,10 +39,6 @@ public class MobileShootButton : MonoBehaviour
         if (activeWeapon != null)
         {
             activeWeapon.OnShootButtonPressed();
-        }
-        else
-        {
-            Debug.LogWarning("⚠️ No active weapon found!");
         }
     }
 }

@@ -5,10 +5,10 @@ public class MobileJumpButton : MonoBehaviour
 {
     private RigidbodyFirstPersonController fpsController;
     private Rigidbody playerRigidbody;
-    private float jumpForce = 50f;  // Default from your FPS controller
+    private float jumpForce = 50f;
     
     [Header("Ground Check")]
-    public LayerMask groundLayer;  // Ground layer set করতে হবে Inspector থেকে
+    public LayerMask groundLayer;
     public float groundCheckDistance = 0.2f;
 
     void Start()
@@ -20,30 +20,19 @@ public class MobileJumpButton : MonoBehaviour
         {
             playerRigidbody = fpsController.GetComponent<Rigidbody>();
             jumpForce = fpsController.movementSettings.JumpForce;
-            Debug.Log($"✅ Jump button connected! Jump Force: {jumpForce}");
-        }
-        else
-        {
-            Debug.LogError("❌ RigidbodyFirstPersonController not found!");
         }
         
         // Check ground layer setup
         if (groundLayer == 0)
         {
-            Debug.LogWarning("⚠️ Ground Layer not set! Set it in Inspector");
+            Debug.LogWarning("Ground Layer not set! Set it in Inspector");
         }
     }
 
     // Called from UI Button
     public void OnJumpPressed()
     {
-        Debug.Log("🔴 JUMP BUTTON PRESSED!");
-
-        if (playerRigidbody == null)
-        {
-            Debug.LogError("❌ Rigidbody missing!");
-            return;
-        }
+        if (playerRigidbody == null) return;
 
         // Simple jump - works every time button pressed
         Vector3 velocity = playerRigidbody.velocity;
@@ -54,8 +43,7 @@ public class MobileJumpButton : MonoBehaviour
             velocity.y = 0f;
             playerRigidbody.velocity = velocity;
             playerRigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-            Debug.Log($"🔼 JUMP! Force: {jumpForce}");
-    }
+        }
     }
 
     // Ground check using raycast

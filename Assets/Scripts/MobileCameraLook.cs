@@ -9,7 +9,11 @@ public class MobileCameraLook : MonoBehaviour
     
     [Header("Sensitivity")]
     public float pcSensitivity = 2f;
-    public float touchSensitivity = 1.2f;  // Slightly increased for smoothness
+    public float touchSensitivity = 0.8f;  // Reduced for smoother control
+    
+    [Header("Smoothing")]
+    public bool enableSmoothing = true;
+    public float smoothSpeed = 10f;  // Higher = more responsive, lower = smoother
     
     [Header("Rotation Limits")]
     public float minVerticalAngle = -80f;    
@@ -17,24 +21,27 @@ public class MobileCameraLook : MonoBehaviour
     
     [Header("Touch Area")]
     [Range(0f, 1f)]
-    public float joystickAreaWidth = 0.35f;  // 35% left = joystick area
+    public float joystickAreaWidth = 0.35f;
 
     private float xRotation = 0f;
     private Vector2 lastTouchPosition;
     private int activeTouchId = -1;
     private bool isMobile = false;
+    
+    // Smoothing variables
+    private Vector2 currentRotationVelocity;
+    private Vector2 targetRotation;
 
     void Start()
     {
         if (playerBody == null)
         {
-            Debug.LogError("❌ Player Body not assigned!");
+            Debug.LogError("Player Body not assigned!");
         }
 
         #if UNITY_ANDROID || UNITY_IOS
             isMobile = true;
             Input.multiTouchEnabled = true;
-            Debug.Log("📱 Mobile multi-touch enabled");
         #endif
 
         if (!isMobile && fpsController != null)
@@ -42,7 +49,6 @@ public class MobileCameraLook : MonoBehaviour
             fpsController.mouseLook.XSensitivity = pcSensitivity;
             fpsController.mouseLook.YSensitivity = pcSensitivity;
             this.enabled = false;
-            Debug.Log("🖱️ Using original MouseLook for PC");
         }
     }
 
@@ -56,9 +62,9 @@ public class MobileCameraLook : MonoBehaviour
 
     void HandleMobileCameraRotation()
     {
-        float mouseX = 0f;
-        float mouseY = 0f;
-        bool foundValidTouch = false;
+        float deltaX = 0f;
+        float deltaY = 0f;
+        bool isTouching = false;
 
         if (Input.touchCount > 0)
         {
@@ -77,42 +83,67 @@ public class MobileCameraLook : MonoBehaviour
                     {
                         activeTouchId = touch.fingerId;
                         lastTouchPosition = touch.position;
-                        foundValidTouch = true;
-                        Debug.Log($"📷 Camera touch started: {activeTouchId}");
+                        currentRotationVelocity = Vector2.zero;  // Reset velocity
+                        isTouching = true;
                     }
-                    // Our active touch is moving
+                    // Active touch is moving
                     else if (touch.fingerId == activeTouchId && touch.phase == TouchPhase.Moved)
                     {
                         Vector2 delta = touch.position - lastTouchPosition;
                         
-                        // Calculate rotation with smoothing
-                        mouseX = delta.x * touchSensitivity * 0.1f;
-                        mouseY = delta.y * touchSensitivity * 0.1f;
+                        // Calculate rotation delta with reduced sensitivity
+                        deltaX = delta.x * touchSensitivity;
+                        deltaY = delta.y * touchSensitivity;
                         
                         lastTouchPosition = touch.position;
-                        foundValidTouch = true;
+                        isTouching = true;
                     }
                     // Touch ended
                     else if (touch.fingerId == activeTouchId && 
                             (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled))
                     {
                         activeTouchId = -1;
-                        Debug.Log("📷 Camera touch ended");
+                        currentRotationVelocity = Vector2.zero;  // Reset on release
                     }
                 }
             }
         }
 
-        // Apply rotation smoothly
-        if (playerBody != null && foundValidTouch && (Mathf.Abs(mouseX) > 0.001f || Mathf.Abs(mouseY) > 0.001f))
+        // Apply rotation with smoothing
+        if (playerBody != null && isTouching)
         {
-            // Vertical rotation (camera up/down)
-            xRotation -= mouseY;
-            xRotation = Mathf.Clamp(xRotation, minVerticalAngle, maxVerticalAngle);
-            transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
-            
-            // Horizontal rotation (player turn)
-            playerBody.Rotate(Vector3.up * mouseX);
+            if (enableSmoothing)
+            {
+                // Smooth rotation using lerp
+                targetRotation = new Vector2(deltaX, deltaY);
+                currentRotationVelocity = Vector2.Lerp(
+                    currentRotationVelocity, 
+                    targetRotation, 
+                    smoothSpeed * Time.deltaTime
+                );
+                
+                float smoothMouseX = currentRotationVelocity.x;
+                float smoothMouseY = currentRotationVelocity.y;
+                
+                // Apply smoothed rotation
+                xRotation -= smoothMouseY;
+                xRotation = Mathf.Clamp(xRotation, minVerticalAngle, maxVerticalAngle);
+                transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+                playerBody.Rotate(Vector3.up * smoothMouseX);
+            }
+            else
+            {
+                // Direct rotation without smoothing
+                xRotation -= deltaY;
+                xRotation = Mathf.Clamp(xRotation, minVerticalAngle, maxVerticalAngle);
+                transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+                playerBody.Rotate(Vector3.up * deltaX);
+            }
+        }
+        else if (!isTouching)
+        {
+            // Gradually stop rotation when not touching
+            currentRotationVelocity = Vector2.Lerp(currentRotationVelocity, Vector2.zero, smoothSpeed * Time.deltaTime);
         }
     }
 }

@@ -18,7 +18,7 @@ public class Weapon : MonoBehaviour
 
     bool canShoot = true;
     private bool shootButtonPressed = false;
-    private bool isWeaponReady = false;  // New flag
+    private bool isWeaponReady = false;
 
     private void OnEnable()
     {
@@ -32,16 +32,12 @@ public class Weapon : MonoBehaviour
         shootButtonPressed = false;
         isWeaponReady = false;
         
-        Debug.Log($"🔧 Initializing {gameObject.name}...");
-        
         // Wait a frame to ensure everything is set up
         yield return null;
         
         // Now weapon is ready
         canShoot = true;
         isWeaponReady = true;
-        
-        Debug.Log($"✅ {gameObject.name} ready to fire!");
     }
 
     private void OnDisable()
@@ -54,7 +50,7 @@ public class Weapon : MonoBehaviour
 
     void Update()
     {
-        if (!isWeaponReady) return;  // Don't do anything if weapon not ready
+        if (!isWeaponReady) return;
         
         DisplayAmmo();
 
@@ -69,7 +65,6 @@ public class Weapon : MonoBehaviour
         // Mobile: button only
         if (shootButtonPressed && canShoot)
         {
-            Debug.Log($"🔫 Firing {gameObject.name} - Ammo: {ammoSlot.GetAmmoAmount(ammoType)}");
             StartCoroutine(Shoot());
             shootButtonPressed = false;
         }
@@ -85,11 +80,6 @@ public class Weapon : MonoBehaviour
         if (isWeaponReady && canShoot)
         {
             shootButtonPressed = true;
-            Debug.Log($"📱 Shoot pressed on {gameObject.name} (Ready: {isWeaponReady}, CanShoot: {canShoot})");
-        }
-        else
-        {
-            Debug.LogWarning($"⚠️ Cannot shoot {gameObject.name} - Ready: {isWeaponReady}, CanShoot: {canShoot}");
         }
     }
 
@@ -108,11 +98,6 @@ public class Weapon : MonoBehaviour
             PlayMuzzleFlash();
             ProcessRaycast();
             ammoSlot.ReduceCurrentAmmo(ammoType);
-            Debug.Log($"💥 Shot fired! Remaining ammo: {ammoSlot.GetAmmoAmount(ammoType)}");
-        }
-        else
-        {
-            Debug.Log("⚠️ No ammo!");
         }
         
         yield return new WaitForSeconds(timeBetweenShots);
