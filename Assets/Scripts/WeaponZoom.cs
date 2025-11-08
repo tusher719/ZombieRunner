@@ -12,7 +12,6 @@ public class WeaponZoom : MonoBehaviour
     [SerializeField] float zoomedOutSensitivity = 2f;
     [SerializeField] float zoomedInSensitivity = 0.5f;
 
-
     bool zoomedInToggle = false;
 
     private void OnDisable()
@@ -22,7 +21,9 @@ public class WeaponZoom : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(1))
+        // Only work on PC, not mobile
+        #if UNITY_EDITOR || UNITY_STANDALONE
+        if (Input.GetMouseButtonDown(1))  // Right mouse button
         {
             if (zoomedInToggle == false)
             {
@@ -33,6 +34,7 @@ public class WeaponZoom : MonoBehaviour
                 ZoomOut();
             }
         }
+        #endif
     }
 
     private void ZoomIn()
@@ -42,6 +44,7 @@ public class WeaponZoom : MonoBehaviour
         fpsController.mouseLook.XSensitivity = zoomedInSensitivity;
         fpsController.mouseLook.YSensitivity = zoomedInSensitivity;
     }
+
     private void ZoomOut()
     {
         zoomedInToggle = false;

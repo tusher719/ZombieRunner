@@ -128,7 +128,9 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         private void Update()
         {
+            #if !UNITY_ANDROID && !UNITY_IOS
             RotateView();
+            #endif
 
             if (CrossPlatformInputManager.GetButtonDown("Jump") && !m_Jump)
             {

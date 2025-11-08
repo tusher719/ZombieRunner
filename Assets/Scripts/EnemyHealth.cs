@@ -5,7 +5,6 @@ using UnityEngine;
 public class EnemyHealth : MonoBehaviour
 {
     [SerializeField] float hitPoints = 100f;
-
     bool isDead = false;
 
     public bool IsDead()
@@ -15,9 +14,12 @@ public class EnemyHealth : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
+        if (isDead) return;
+
         BroadcastMessage("OnDamageTaken");
         GetComponent<EnemyAI>().OnDamageTaken();
         hitPoints -= damage;
+
         if (hitPoints <= 0)
         {
             Die();
@@ -28,6 +30,16 @@ public class EnemyHealth : MonoBehaviour
     {
         if (isDead) return;
         isDead = true;
+
         GetComponent<Animator>().SetTrigger("die");
+
+        // Notify GameManager
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.ZombieKilled();
+        }
+
+        // Destroy after animation (adjust time based on your animation length)
+        Destroy(gameObject, 3f);
     }
 }

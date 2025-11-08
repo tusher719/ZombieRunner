@@ -53,7 +53,7 @@ public class MobileWeaponZoom : MonoBehaviour
         }
     }
 
-    // Called from UI button
+    // ONLY called from UI button - no other input
     public void OnZoomPressed()
     {
         // Check if current weapon has zoom capability
@@ -104,13 +104,11 @@ public class MobileWeaponZoom : MonoBehaviour
         isZoomed = false;
     }
     
-    // Called when weapon switches
     void OnDisable()
     {
         ForceZoomOut();
     }
 
-    // Public method for external calls
     public void ForceZoomOut()
     {
         if (isZoomed)
@@ -119,7 +117,6 @@ public class MobileWeaponZoom : MonoBehaviour
         }
     }
 
-    // Public check method
     public bool IsZoomed()
     {
         return isZoomed;
