@@ -138,6 +138,7 @@ GameObject:
   - component: {fileID: 9666251}
   - component: {fileID: 9666253}
   - component: {fileID: 9666252}
+  - component: {fileID: 9666254}
   m_Layer: 0
   m_Name: Reticle
   m_TagString: Untagged
@@ -177,7 +178,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.39215687}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.6862745}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -202,6 +203,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9666250}
   m_CullTransparentMesh: 1
+--- !u!114 &9666254
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9666250}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c117feec463618e488406835e0d2a264, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  crosshairImage: {fileID: 0}
+  normalSize: 50
+  shootSize: 70
+  enemyDetectedSize: 65
+  sizeAnimationSpeed: 15
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
+  enemyColor: {r: 1, g: 0, b: 0, a: 1}
+  colorChangeSpeed: 10
+  playerCamera: {fileID: 790878916}
 --- !u!114 &20880797 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2195573108060084635, guid: 314042a5c79876142a49dd9d06aeb056, type: 3}
@@ -5424,12 +5446,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 231770602415451206, guid: c6453f8e1f814744d8b94e5a6d1f9942, type: 3}
+      propertyPath: range
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 231770602415451206, guid: c6453f8e1f814744d8b94e5a6d1f9942, type: 3}
       propertyPath: ammoText
       value: 
       objectReference: {fileID: 295187748}
     - target: {fileID: 307388678280373127, guid: c6453f8e1f814744d8b94e5a6d1f9942, type: 3}
       propertyPath: range
-      value: 100
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 307388678280373127, guid: c6453f8e1f814744d8b94e5a6d1f9942, type: 3}
       propertyPath: damage
@@ -5459,6 +5485,14 @@ PrefabInstance:
       propertyPath: hitPointsText
       value: 
       objectReference: {fileID: 414806614}
+    - target: {fileID: 5242384057950870579, guid: c6453f8e1f814744d8b94e5a6d1f9942, type: 3}
+      propertyPath: zoomedOutFOV
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 5449163841858198793, guid: c6453f8e1f814744d8b94e5a6d1f9942, type: 3}
+      propertyPath: range
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 5449163841858198793, guid: c6453f8e1f814744d8b94e5a6d1f9942, type: 3}
       propertyPath: ammoText
       value: 
@@ -5531,6 +5565,11 @@ MonoBehaviour:
   playerBody: {fileID: 145798136}
   fpsController: {fileID: 790878913}
   sensitivity: 0.3
+--- !u!20 &790878916 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 2000000, guid: c6453f8e1f814744d8b94e5a6d1f9942, type: 3}
+  m_PrefabInstance: {fileID: 790878912}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &795903157
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5749,7 +5788,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &830360017
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9497,7 +9536,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1363458491
 RectTransform:
   m_ObjectHideFlags: 0
@@ -13366,7 +13405,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1916361545
 RectTransform:
   m_ObjectHideFlags: 0

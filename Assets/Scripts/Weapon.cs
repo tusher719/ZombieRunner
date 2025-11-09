@@ -16,6 +16,9 @@ public class Weapon : MonoBehaviour
     [SerializeField] float timeBetweenShots = 0.5f;
     [SerializeField] TextMeshProUGUI ammoText;
 
+    [Header("Crosshair Reference")]
+    private CrosshairController crosshair;
+
     bool canShoot = true;
     private bool shootButtonPressed = false;
     private bool isWeaponReady = false;
@@ -23,6 +26,12 @@ public class Weapon : MonoBehaviour
     private void OnEnable()
     {
         StartCoroutine(InitializeWeapon());
+    }
+
+    void Start()
+    {
+        // Find crosshair once at start
+        crosshair = FindObjectOfType<CrosshairController>();
     }
 
     private IEnumerator InitializeWeapon()
@@ -34,6 +43,12 @@ public class Weapon : MonoBehaviour
         
         // Wait a frame to ensure everything is set up
         yield return null;
+        
+        // Update crosshair range when weapon is enabled/switched
+        if (crosshair != null)
+        {
+            crosshair.SetWeaponRange(range);
+        }
         
         // Now weapon is ready
         canShoot = true;
@@ -95,6 +110,12 @@ public class Weapon : MonoBehaviour
         
         if (ammoSlot.GetAmmoAmount(ammoType) > 0)
         {
+            // Notify crosshair IMMEDIATELY when shooting starts
+            if (crosshair != null)
+            {
+                crosshair.OnShoot();
+            }
+            
             PlayMuzzleFlash();
             ProcessRaycast();
             ammoSlot.ReduceCurrentAmmo(ammoType);
