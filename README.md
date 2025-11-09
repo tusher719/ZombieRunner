@@ -346,6 +346,42 @@ ZombieRunner/
 - Health bar with dynamic scaling
 - Mobile UI buttons (shoot, zoom, weapon switch)
 
+## Version 2.4.2.1 - Enemy Health System Implementation
+
+### Added Features
+- **Enemy Health Bar System**: Implemented visual health indicator for enemies
+  - Dynamic health bar that displays current enemy health status
+  - Smooth fill animation using `Mathf.MoveTowards` for gradual health reduction
+  - Billboard effect to keep healthbar always facing the camera
+  
+- **Health Bar UI Components**:
+  - Background and Foreground image-based health display
+  - Canvas-based rendering with proper layering
+  - Configurable reduction speed for health bar animation
+
+### Fixed
+- **Health Value Validation**: 
+  - Prevented negative health values using `Mathf.Max(hitPoints, 0)`
+  - Health bar clamped between 0-1 range using `Mathf.Clamp01()`
+  - Ensured accurate health percentage calculation
+  
+- **Enemy Death State Handling**:
+  - Health bar automatically hides when enemy health reaches zero
+  - Canvas disabled upon enemy death for cleaner visuals
+  - Proper integration with existing death animation system
+
+### Technical Improvements
+- Auto-assignment of health bar sprite if not manually configured
+- Error handling for missing UI components
+- Professional code documentation with clear inline comments
+- Proper component reference management in Start() method
+
+### Scripts Modified
+- `EnemyHealth.cs`: Added health bar integration and validation
+- `EnemyHealthbar.cs`: Complete implementation with billboard and hide functionality
+
+---
+
 ---
 
 ## 🤝 Contributing
