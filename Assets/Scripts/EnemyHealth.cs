@@ -5,7 +5,16 @@ using UnityEngine;
 public class EnemyHealth : MonoBehaviour
 {
     [SerializeField] float hitPoints = 100f;
+    [SerializeField] private EnemyHealthbar _healthbar;
+
+    private float maxHealth;
     bool isDead = false;
+
+    void Start()
+    {
+        maxHealth = hitPoints;
+        _healthbar.UpdateHealthBar(maxHealth, hitPoints);
+    }
 
     public bool IsDead()
     {
@@ -18,11 +27,17 @@ public class EnemyHealth : MonoBehaviour
 
         BroadcastMessage("OnDamageTaken");
         GetComponent<EnemyAI>().OnDamageTaken();
+        
         hitPoints -= damage;
+        hitPoints = Mathf.Max(hitPoints, 0);
 
         if (hitPoints <= 0)
         {
             Die();
+        } 
+        else
+        {
+            _healthbar.UpdateHealthBar(maxHealth, hitPoints);
         }
     }
 
@@ -30,16 +45,18 @@ public class EnemyHealth : MonoBehaviour
     {
         if (isDead) return;
         isDead = true;
+        
+        // Update healthbar to zero and hide it
+        _healthbar.UpdateHealthBar(maxHealth, 0);
+        _healthbar.HideHealthBar();
 
         GetComponent<Animator>().SetTrigger("die");
 
-        // Notify GameManager
         if (GameManager.Instance != null)
         {
             GameManager.Instance.ZombieKilled();
         }
 
-        // Destroy after animation (adjust time based on your animation length)
         Destroy(gameObject, 3f);
     }
 }
