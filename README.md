@@ -380,7 +380,132 @@ ZombieRunner/
 - `EnemyHealth.cs`: Added health bar integration and validation
 - `EnemyHealthbar.cs`: Complete implementation with billboard and hide functionality
 
+## Version 2.4.3.1 - Pause System Implementation
+
+### Added Features
+- **Game Pause Functionality**: Implemented complete pause/resume system
+  - Pause button in top-right corner of gameplay UI
+  - Pause panel with Continue, Reset, and Main Menu options
+  - ESC key support for PC testing
+  
+- **Time Management**:
+  - `Time.timeScale = 0` freezes all game mechanics when paused
+  - Automatic time reset when loading scenes
+  - Proper cursor lock/unlock during pause states
+
+- **UI State Management**:
+  - Pause button hides when panel is open
+  - Pause button shows again when continuing
+  - Clean toggle between gameplay and pause states
+
+### Technical Improvements
+- Enhanced GameManager with pause state tracking
+- Integrated pause system with existing kill count and score tracking
+- Proper scene transition handling from pause menu
+- Mobile and PC compatible pause controls
+
+### Scripts Modified
+- `GameManager.cs`: Added pause/resume methods and UI references
+- Updated button onClick events for pause functionality
+
 ---
+
+## Version 2.4.4.1 - Dynamic Crosshair System
+
+### Added Features
+- **Dynamic Crosshair Animations**: Real-time visual feedback system
+  - Instant size expansion when shooting (50 → 75 pixels)
+  - Smooth return to normal size after firing
+  - Configurable animation speed for responsive feel
+  
+- **Enemy Detection Indicators**:
+  - Crosshair changes to red when aiming at enemies
+  - Size increases slightly (50 → 65 pixels) on enemy detection
+  - Smooth color transitions between white and red states
+  - Visual confirmation of target acquisition
+
+- **Weapon-Specific Range Integration**:
+  - Each weapon's detection range matches its actual firing range
+  - Automatic range update on weapon switching
+  - Seamless transition between different weapon types
+  - Prevents false enemy detection beyond weapon capabilities
+
+### Technical Implementation
+- **Priority-Based State System**:
+  1. Shooting state (highest priority) - Size: 75px
+  2. Enemy detection state - Size: 65px, Color: Red
+  3. Normal state - Size: 50px, Color: White
+
+- **Performance Optimizations**:
+  - Efficient raycast-based enemy detection
+  - Lerp interpolation for smooth animations
+  - Timer-based state management without coroutine overhead
+  - Minimal Update() calculations
+
+- **Cross-Platform Support**:
+  - Works seamlessly with both PC and mobile controls
+  - Instant visual feedback regardless of input method
+  - Synchronized with existing shooting mechanics
+
+### Scripts Created
+- `CrosshairController.cs`: Complete crosshair management system with dynamic size, color, and weapon range integration
+
+### Scripts Modified
+- `Weapon.cs`: Added crosshair notification on shoot and weapon range updates
+
+### User Experience Improvements
+- Instant visual feedback eliminates shooting lag perception
+- Clear enemy targeting confirmation reduces missed shots
+- Weapon-specific range indicators help players understand engagement distances
+- Professional game feel matching AAA FPS standards
+
+---
+
+## Setup Instructions
+
+### Crosshair System
+1. Ensure `Reticle` GameObject has `CrosshairController` script attached
+2. Configure crosshair settings in Inspector:
+   - Normal Size: 50
+   - Shoot Size: 75
+   - Enemy Detected Size: 65
+3. Assign Main Camera reference
+4. Each weapon automatically updates crosshair range
+
+### Pause System
+1. Assign `PausePanel` to GameManager
+2. Assign `PauseButton` to GameManager
+3. Connect button onClick events:
+   - Pause Button → `GameManager.OnPauseButtonClicked()`
+   - Continue Button → `GameManager.OnContinueButtonClicked()`
+   - Main Menu Button → `GameManager.OnMainMenuButtonClicked()`
+
+---
+
+## Current Game Features Summary
+
+### Core Gameplay
+- First-person shooter mechanics (PC + Mobile)
+- Multiple weapon system with unique ranges
+- Enemy health system with visual health bars
+- Kill tracking and scoring system
+- Level objective completion with door unlock
+
+### UI Systems
+- Dynamic crosshair with enemy detection
+- Health bar display for player
+- Ammo counter for weapons
+- Kill count and score display
+- Pause menu with game state management
+
+### Controls
+- **PC**: WASD movement, Mouse aim, Left-click shoot, ESC pause
+- **Mobile**: Virtual joystick, Touch camera controls, UI buttons for actions
+
+### Performance
+- Optimized for 58-60 FPS on mid-range Android devices
+- Smooth animations and transitions
+- Efficient enemy detection system
 
 ---
 
