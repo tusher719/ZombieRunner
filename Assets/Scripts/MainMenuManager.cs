@@ -8,20 +8,18 @@ public class MainMenuManager : MonoBehaviour
 
     void Start()
     {
-        // Make sure settings panel is hidden at start
         if (settingsPanel != null)
         {
             settingsPanel.SetActive(false);
         }
     }
 
-    // Called by Play button
     public void PlayGame()
     {
-        SceneManager.LoadScene("Sandbox");
+        // Go to Map scene instead of directly to Sandbox
+        SceneManager.LoadScene("Map");
     }
 
-    // Called by Settings button
     public void OpenSettings()
     {
         if (settingsPanel != null)
@@ -30,7 +28,6 @@ public class MainMenuManager : MonoBehaviour
         }
     }
 
-    // Called by Back button in Settings
     public void CloseSettings()
     {
         if (settingsPanel != null)
@@ -39,7 +36,6 @@ public class MainMenuManager : MonoBehaviour
         }
     }
 
-    // Called by Exit button
     public void ExitGame()
     {
         #if UNITY_EDITOR

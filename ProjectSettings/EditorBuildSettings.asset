@@ -12,6 +12,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Main.unity
     guid: 9e907da5c82ef334d8f427b81fb72759
   - enabled: 1
+    path: Assets/Scenes/Map.unity
+    guid: b713a02c5c14fab45aeb9b1f3f210ec9
+  - enabled: 1
     path: Assets/Scenes/Sandbox.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   m_configObjects: {}

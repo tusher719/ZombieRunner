@@ -1,12 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance { get; private set; }
+    public static GameManager Instance;
 
     [Header("Level Settings")]
     public int currentLevel = 1;
@@ -14,7 +12,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Score Settings")]
     public int pointsPerZombie = 10;
-    private int totalScore = 0;
+    private int currentLevelScore = 0;
 
     [Header("Zombie Tracking")]
     private int zombiesKilled = 0;
@@ -23,17 +21,16 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI killCountText;
     public TextMeshProUGUI scoreText;
 
-    [Header("Pause System")]
-    [SerializeField] private GameObject pausePanel;
-    [SerializeField] private GameObject pauseButton;
-    private bool isPaused = false;
-
     [Header("Door Reference")]
-    public GameObject levelDoor;
+    public LevelDoor levelDoor;
+
+    [Header("Pause System")]
+    public GameObject pausePanel;      // The panel that shows when paused
+    public GameObject pauseButton;     // The button to trigger pause
+    private bool isPaused = false;
 
     void Awake()
     {
-        // Singleton pattern
         if (Instance == null)
         {
             Instance = this;
@@ -46,13 +43,15 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        // Initialize UI
+        // Load which level we're playing
+        currentLevel = PlayerPrefs.GetInt("CurrentLevel", 1);
+        
         UpdateUI();
 
-        // Ensure game starts unpaused
-        ResumeGame();
-        
-        // Hide pause panel and show pause button
+        // Door handles its own initial state in LevelDoor.cs Start()
+        // No need to set active here
+
+        // Initialize pause UI
         if (pausePanel != null)
         {
             pausePanel.SetActive(false);
@@ -62,52 +61,61 @@ public class GameManager : MonoBehaviour
         {
             pauseButton.SetActive(true);
         }
-
-        // Keep door hidden until objective complete
-        if (levelDoor != null)
-        {
-            levelDoor.SetActive(false);
-        }
     }
 
     void Update()
     {
-        // ESC key to toggle pause (for PC testing)
+        // Check for pause input (ESC key for PC)
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            TogglePause();
+            if (isPaused)
+            {
+                ResumeGame();
+            }
+            else
+            {
+                PauseGame();
+            }
         }
     }
 
-    // Called when zombie dies
     public void ZombieKilled()
     {
         zombiesKilled++;
-        totalScore += pointsPerZombie;
+        currentLevelScore += pointsPerZombie;
 
         UpdateUI();
 
-        Debug.Log($"Zombies Killed: {zombiesKilled}/{zombiesToKill} | Score: {totalScore}");
-
-        // Check if level objective completed
         if (zombiesKilled >= zombiesToKill)
         {
             LevelComplete();
         }
     }
 
-    // Level completion logic
     void LevelComplete()
     {
-        Debug.Log("Level Complete! Door unlocked.");
-        
         if (levelDoor != null)
         {
-            levelDoor.SetActive(true);
+            levelDoor.UnlockDoor();
         }
+
+        // Save progress
+        MapManager.LevelCompleted(currentLevel, currentLevelScore);
     }
 
-    // Update UI elements
+    public void LoadNextLevel()
+    {
+        // Return to map scene
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("Map");
+    }
+
+    public void LoadMainMenu()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("Main");
+    }
+
     void UpdateUI()
     {
         if (killCountText != null)
@@ -117,27 +125,23 @@ public class GameManager : MonoBehaviour
 
         if (scoreText != null)
         {
-            scoreText.text = $"Score: {totalScore}";
+            scoreText.text = $"Score: {currentLevelScore}";
         }
     }
 
-    // Get score for external scripts
-    public int GetTotalScore()
+    public int GetCurrentLevelScore()
     {
-        return totalScore;
+        return currentLevelScore;
     }
 
-    public int GetZombiesKilled()
-    {
-        return zombiesKilled;
-    }
+    // ========== PAUSE SYSTEM ==========
 
-    // Pause/Resume Methods
+    // Called by Pause Button (Mobile/PC UI)
     public void PauseGame()
     {
         isPaused = true;
-        Time.timeScale = 0f; // Freeze all time-based operations
-        
+        Time.timeScale = 0f;
+
         // Show pause panel
         if (pausePanel != null)
         {
@@ -150,107 +154,52 @@ public class GameManager : MonoBehaviour
             pauseButton.SetActive(false);
         }
 
-        // Show cursor for UI interaction
+        // Show cursor
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+
+        // Disable weapon switching during pause
+        WeaponeSwitcher weaponSwitcher = FindObjectOfType<WeaponeSwitcher>();
+        if (weaponSwitcher != null)
+        {
+            weaponSwitcher.enabled = false;
+        }
     }
 
+    // Called by Continue Button
     public void ResumeGame()
     {
         isPaused = false;
-        Time.timeScale = 1f; // Resume normal time
-        
+        Time.timeScale = 1f;
+
         // Hide pause panel
         if (pausePanel != null)
         {
             pausePanel.SetActive(false);
         }
 
-        // Show pause button again
+        // Show pause button
         if (pauseButton != null)
         {
             pauseButton.SetActive(true);
         }
 
-        // Hide cursor for gameplay
+        // Hide cursor (for PC gameplay)
+        #if UNITY_STANDALONE
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-    }
+        #endif
 
-    public void TogglePause()
-    {
-        if (isPaused)
+        // Re-enable weapon switching
+        WeaponeSwitcher weaponSwitcher = FindObjectOfType<WeaponeSwitcher>();
+        if (weaponSwitcher != null)
         {
-            ResumeGame();
-        }
-        else
-        {
-            PauseGame();
+            weaponSwitcher.enabled = true;
         }
     }
 
     public bool IsPaused()
     {
         return isPaused;
-    }
-
-    // UI Button Methods for Pause Menu
-    public void OnContinueButtonClicked()
-    {
-        ResumeGame();
-    }
-
-    public void OnMainMenuButtonClicked()
-    {
-        // Resume time before loading scene
-        Time.timeScale = 1f;
-        
-        // Load main menu scene
-        LoadMainMenu();
-    }
-
-    // Called from Pause Button in gameplay UI
-    public void OnPauseButtonClicked()
-    {
-        PauseGame();
-    }
-
-    // Scene Loading Methods
-    public void LoadNextLevel()
-    {
-        // Resume time before loading
-        Time.timeScale = 1f;
-        
-        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-        int nextSceneIndex = currentSceneIndex + 1;
-
-        // Check if next scene exists
-        if (nextSceneIndex < SceneManager.sceneCountInBuildSettings)
-        {
-            SceneManager.LoadScene(nextSceneIndex);
-        }
-        else
-        {
-            Debug.LogWarning("No next level found! Loading Main Menu.");
-            LoadMainMenu();
-        }
-    }
-
-    public void LoadMainMenu()
-    {
-        // Resume time before loading
-        Time.timeScale = 1f;
-        
-        // Load main menu scene by name
-        SceneManager.LoadScene("Main");
-    }
-
-    public void RestartLevel()
-    {
-        // Resume time before reloading
-        Time.timeScale = 1f;
-        
-        // Reload current scene
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }
