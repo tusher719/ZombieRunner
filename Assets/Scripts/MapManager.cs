@@ -7,11 +7,11 @@ public class MapManager : MonoBehaviour
 {
     [Header("UI References")]
     public TextMeshProUGUI totalScoreText;
-    public LevelButton[] levelButtons; // Array of 5 level buttons
+    public LevelButton[] levelButtons;
 
     [Header("Level Data")]
     private int currentUnlockedLevel = 1;
-    private int[] levelScores = new int[5]; // Scores for levels 1-5
+    private int[] levelScores = new int[5];
     private bool[] levelCompleted = new bool[5];
 
     void Start()
@@ -22,7 +22,6 @@ public class MapManager : MonoBehaviour
 
     void LoadProgress()
     {
-        // Load from PlayerPrefs
         currentUnlockedLevel = PlayerPrefs.GetInt("UnlockedLevel", 1);
 
         for (int i = 0; i < 5; i++)
@@ -61,11 +60,12 @@ public class MapManager : MonoBehaviour
         {
             // Store which level to load
             PlayerPrefs.SetInt("CurrentLevel", levelNumber);
+            PlayerPrefs.Save();
 
             // Load appropriate scene
             if (levelNumber <= 3)
             {
-                // Levels 1-3 are in Sandbox
+                // Levels 1-3 are in Sandbox scene
                 SceneManager.LoadScene("Sandbox");
             }
             else if (levelNumber == 4)

@@ -4,6 +4,10 @@ using System.Collections;
 
 public class LevelDoor : MonoBehaviour
 {
+    [Header("Level Settings - SET MANUALLY")]
+    [Tooltip("Which level this door belongs to (1, 2, 3, etc.)")]
+    public int levelNumber = 1;
+
     [Header("Door States")]
     public bool isLocked = true;
 
@@ -15,16 +19,58 @@ public class LevelDoor : MonoBehaviour
     public Light doorLight;
 
     [Header("Lock Icon")]
-    public GameObject lockIcon;  // 3D lock model or sprite
+    public GameObject lockIcon;
 
     [Header("Audio")]
     public AudioSource audioSource;
     public AudioClip unlockSound;
 
+    // Instance materials (not shared) - এটা prefab issue solve করবে
+    private Material instanceLockedMat;
+    private Material instanceUnlockedMat;
+
+    void Awake()
+    {
+        // Create material instances to avoid prefab sharing issues
+        CreateMaterialInstances();
+    }
+
     void Start()
     {
-        // Set initial locked state
+        // FORCE locked state on start - CRITICAL!
+        isLocked = true;
+        
         SetLockedState(true);
+        
+        Debug.Log($"[{gameObject.name}] Door initialized as LOCKED for Level {levelNumber}");
+    }
+
+    void OnEnable()
+    {
+        // Also force locked when enabled
+        if (Application.isPlaying)
+        {
+            isLocked = true;
+            SetLockedState(true);
+        }
+    }
+
+    // 🎨 Create material instances to prevent prefab sharing issues
+    void CreateMaterialInstances()
+    {
+        if (doorRenderer != null)
+        {
+            // Create instance copies of materials
+            if (lockedMaterial != null)
+            {
+                instanceLockedMat = new Material(lockedMaterial);
+            }
+            
+            if (unlockedMaterial != null)
+            {
+                instanceUnlockedMat = new Material(unlockedMaterial);
+            }
+        }
     }
 
     public void UnlockDoor()
@@ -53,6 +99,8 @@ public class LevelDoor : MonoBehaviour
 
             // Pulse animation
             StartCoroutine(PulseDoor());
+            
+            Debug.Log($"[{gameObject.name}] Door UNLOCKED for Level {levelNumber}");
         }
     }
 
@@ -60,16 +108,25 @@ public class LevelDoor : MonoBehaviour
     {
         isLocked = locked;
 
-        // Change material
+        // Change material using INSTANCE materials (not shared)
         if (doorRenderer != null)
         {
-            doorRenderer.material = locked ? lockedMaterial : unlockedMaterial;
+            if (locked && instanceLockedMat != null)
+            {
+                doorRenderer.material = instanceLockedMat;
+            }
+            else if (!locked && instanceUnlockedMat != null)
+            {
+                doorRenderer.material = instanceUnlockedMat;
+            }
         }
 
         // Change light color
         if (doorLight != null)
         {
+            doorLight.enabled = true;
             doorLight.color = locked ? Color.red : Color.green;
+            doorLight.intensity = locked ? 3 : 5;
         }
 
         // Show/hide lock icon
@@ -83,8 +140,12 @@ public class LevelDoor : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            Debug.Log($"[{gameObject.name}] Player touched door (Level {levelNumber}). Locked: {isLocked}");
+            
             if (!isLocked)
             {
+                Debug.Log($"Door unlocked! Loading next level after Level {levelNumber}...");
+                
                 // Door is unlocked, load next level
                 if (GameManager.Instance != null)
                 {
@@ -93,6 +154,8 @@ public class LevelDoor : MonoBehaviour
             }
             else
             {
+                Debug.Log("Door is locked, showing message...");
+                
                 // Door is still locked - show message
                 if (DoorUnlockUI.Instance != null)
                 {
@@ -133,4 +196,18 @@ public class LevelDoor : MonoBehaviour
 
         transform.localScale = originalScale;
     }
+
+    // Editor helper - show level number in inspector
+    #if UNITY_EDITOR
+    void OnDrawGizmos()
+    {
+        Gizmos.color = isLocked ? Color.red : Color.green;
+        Gizmos.DrawWireCube(transform.position, Vector3.one * 2f);
+        
+        UnityEditor.Handles.Label(
+            transform.position + Vector3.up * 3, 
+            $"Exit Door - Level {levelNumber}\n{(isLocked ? "LOCKED" : "UNLOCKED")}"
+        );
+    }
+    #endif
 }

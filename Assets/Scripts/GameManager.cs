@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
+using System.Collections;
 
 public class GameManager : MonoBehaviour
 {
@@ -25,8 +26,8 @@ public class GameManager : MonoBehaviour
     public LevelDoor levelDoor;
 
     [Header("Pause System")]
-    public GameObject pausePanel;      // The panel that shows when paused
-    public GameObject pauseButton;     // The button to trigger pause
+    public GameObject pausePanel;
+    public GameObject pauseButton;
     private bool isPaused = false;
 
     void Awake()
@@ -46,10 +47,12 @@ public class GameManager : MonoBehaviour
         // Load which level we're playing
         currentLevel = PlayerPrefs.GetInt("CurrentLevel", 1);
         
+        Debug.Log($"[GameManager] Starting Level {currentLevel}");
+        
+        // Activate correct level area and spawn player
+        SetupLevel(currentLevel);
+        
         UpdateUI();
-
-        // Door handles its own initial state in LevelDoor.cs Start()
-        // No need to set active here
 
         // Initialize pause UI
         if (pausePanel != null)
@@ -60,6 +63,211 @@ public class GameManager : MonoBehaviour
         if (pauseButton != null)
         {
             pauseButton.SetActive(true);
+        }
+    }
+
+    void SetupLevel(int levelNum)
+    {
+        Debug.Log($"[GameManager] SetupLevel called for Level {levelNum}");
+        
+        // Find all level areas
+        GameObject level1 = GameObject.Find("Level1Area");
+        GameObject level2 = GameObject.Find("Level2Area");
+        GameObject level3 = GameObject.Find("Level3Area");
+
+        // Deactivate all first
+        if (level1 != null) level1.SetActive(false);
+        if (level2 != null) level2.SetActive(false);
+        if (level3 != null) level3.SetActive(false);
+
+        // Activate current level and store reference
+        GameObject currentLevelArea = null;
+        
+        switch (levelNum)
+        {
+            case 1:
+                if (level1 != null)
+                {
+                    level1.SetActive(true);
+                    currentLevelArea = level1;
+                    Debug.Log("[GameManager] Level 1 Area activated");
+                }
+                else
+                {
+                    Debug.LogError("[GameManager] Level1Area not found!");
+                }
+                break;
+            case 2:
+                if (level2 != null)
+                {
+                    level2.SetActive(true);
+                    currentLevelArea = level2;
+                    Debug.Log("[GameManager] Level 2 Area activated");
+                }
+                else
+                {
+                    Debug.LogError("[GameManager] Level2Area not found!");
+                }
+                break;
+            case 3:
+                if (level3 != null)
+                {
+                    level3.SetActive(true);
+                    currentLevelArea = level3;
+                    Debug.Log("[GameManager] Level 3 Area activated");
+                }
+                else
+                {
+                    Debug.LogError("[GameManager] Level3Area not found!");
+                }
+                break;
+        }
+
+        // CRITICAL: Wait one frame for Unity to process hierarchy changes
+        // Then spawn player in the now-active area
+        if (currentLevelArea != null)
+        {
+            StartCoroutine(SpawnPlayerNextFrame(levelNum, currentLevelArea));
+        }
+        else
+        {
+            Debug.LogError($"[GameManager] Could not find Level{levelNum}Area!");
+        }
+    }
+
+    void SpawnPlayerAtLevelStart(int levelNum)
+    {
+        // Find ALL spawn points (even in inactive objects)
+        LevelSpawnPoint[] allSpawns = Resources.FindObjectsOfTypeAll<LevelSpawnPoint>();
+        
+        Debug.Log($"[GameManager] Found {allSpawns.Length} total spawn points");
+        
+        foreach (LevelSpawnPoint spawn in allSpawns)
+        {
+            Debug.Log($"[GameManager] Spawn point: Level {spawn.levelNumber}, Active: {spawn.gameObject.activeInHierarchy}");
+            
+            if (spawn.levelNumber == levelNum)
+            {
+                // Found correct spawn point
+                GameObject player = GameObject.FindGameObjectWithTag("Player");
+                if (player != null)
+                {
+                    // Make sure spawn point's parent is active
+                    spawn.gameObject.SetActive(true);
+                    
+                    player.transform.position = spawn.transform.position;
+                    player.transform.rotation = spawn.transform.rotation;
+                    
+                    Debug.Log($"[GameManager] Player spawned at Level {levelNum} spawn: {spawn.transform.position}");
+                    return;
+                }
+            }
+        }
+        
+        Debug.LogWarning($"[GameManager] No spawn point found for Level {levelNum}!");
+    }
+
+    // নতুন Coroutine - Area activate হওয়ার পর spawn করে
+    System.Collections.IEnumerator SpawnPlayerNextFrame(int levelNum, GameObject levelArea)
+    {
+        // Unity কে hierarchy process করার সময় দিচ্ছি (1 frame wait)
+        yield return null;
+        
+        Debug.Log($"[GameManager] Spawning player for Level {levelNum} after area activation");
+        
+        // এখন active area তে spawn point খুঁজব - MULTIPLE methods
+        LevelSpawnPoint spawnPoint = null;
+        
+        // Method 1: Search in children
+        spawnPoint = levelArea.GetComponentInChildren<LevelSpawnPoint>(true);
+        
+        // Method 2: If not found, search all active spawn points
+        if (spawnPoint == null)
+        {
+            Debug.LogWarning($"[GameManager] Spawn point not found as child, searching all active spawn points...");
+            
+            LevelSpawnPoint[] allSpawns = FindObjectsOfType<LevelSpawnPoint>();
+            foreach (LevelSpawnPoint spawn in allSpawns)
+            {
+                if (spawn.levelNumber == levelNum)
+                {
+                    spawnPoint = spawn;
+                    Debug.Log($"[GameManager] Found spawn point by level number: {spawn.gameObject.name}");
+                    break;
+                }
+            }
+        }
+        
+        // Method 3: Fallback - spawn at level area position
+        if (spawnPoint == null)
+        {
+            Debug.LogWarning($"[GameManager] ⚠️ No LevelSpawnPoint found for Level {levelNum}! Using level area position as fallback.");
+            
+            // Spawn player at level area's position as fallback
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            if (player != null)
+            {
+                CharacterController cc = player.GetComponent<CharacterController>();
+                if (cc != null) cc.enabled = false;
+                
+                // Use level area position + offset
+                Vector3 fallbackPosition = levelArea.transform.position + Vector3.up * 2f;
+                player.transform.position = fallbackPosition;
+                player.transform.rotation = levelArea.transform.rotation;
+                
+                if (cc != null) cc.enabled = true;
+                
+                Debug.Log($"[GameManager] ⚠️ Player spawned at fallback position: {fallbackPosition}");
+            }
+        }
+        else
+        {
+            // Normal spawn with spawn point found
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            if (player != null)
+            {
+                // CharacterController থাকলে disable করে teleport করব
+                CharacterController cc = player.GetComponent<CharacterController>();
+                if (cc != null)
+                {
+                    cc.enabled = false;
+                }
+                
+                // Player কে spawn point এ teleport করছি
+                player.transform.position = spawnPoint.transform.position;
+                player.transform.rotation = spawnPoint.transform.rotation;
+                
+                // CharacterController আবার enable করছি
+                if (cc != null)
+                {
+                    cc.enabled = true;
+                }
+                
+                Debug.Log($"[GameManager] ✅ Player spawned at Level {levelNum}: {spawnPoint.transform.position}");
+            }
+            else
+            {
+                Debug.LogError("[GameManager] Player not found with tag 'Player'!");
+            }
+        }
+        
+        // এখন door খুঁজব
+        FindCurrentLevelDoor();
+    }
+
+    void FindCurrentLevelDoor()
+    {
+        // Find active door in current level
+        LevelDoor[] doors = FindObjectsOfType<LevelDoor>();
+        
+        foreach (LevelDoor door in doors)
+        {
+            if (door.gameObject.activeInHierarchy)
+            {
+                levelDoor = door;
+                Debug.Log($"[GameManager] Door found: {door.gameObject.name}");
+                break;
+            }
         }
     }
 
@@ -86,6 +294,8 @@ public class GameManager : MonoBehaviour
 
         UpdateUI();
 
+        Debug.Log($"[GameManager] Zombies killed: {zombiesKilled}/{zombiesToKill}");
+
         if (zombiesKilled >= zombiesToKill)
         {
             LevelComplete();
@@ -94,9 +304,15 @@ public class GameManager : MonoBehaviour
 
     void LevelComplete()
     {
+        Debug.Log($"[GameManager] Level {currentLevel} Complete!");
+        
         if (levelDoor != null)
         {
             levelDoor.UnlockDoor();
+        }
+        else
+        {
+            Debug.LogError("[GameManager] Door reference is null!");
         }
 
         // Save progress
@@ -136,29 +352,24 @@ public class GameManager : MonoBehaviour
 
     // ========== PAUSE SYSTEM ==========
 
-    // Called by Pause Button (Mobile/PC UI)
     public void PauseGame()
     {
         isPaused = true;
         Time.timeScale = 0f;
 
-        // Show pause panel
         if (pausePanel != null)
         {
             pausePanel.SetActive(true);
         }
 
-        // Hide pause button
         if (pauseButton != null)
         {
             pauseButton.SetActive(false);
         }
 
-        // Show cursor
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
-        // Disable weapon switching during pause
         WeaponeSwitcher weaponSwitcher = FindObjectOfType<WeaponeSwitcher>();
         if (weaponSwitcher != null)
         {
@@ -166,31 +377,26 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // Called by Continue Button
     public void ResumeGame()
     {
         isPaused = false;
         Time.timeScale = 1f;
 
-        // Hide pause panel
         if (pausePanel != null)
         {
             pausePanel.SetActive(false);
         }
 
-        // Show pause button
         if (pauseButton != null)
         {
             pauseButton.SetActive(true);
         }
 
-        // Hide cursor (for PC gameplay)
         #if UNITY_STANDALONE
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         #endif
 
-        // Re-enable weapon switching
         WeaponeSwitcher weaponSwitcher = FindObjectOfType<WeaponeSwitcher>();
         if (weaponSwitcher != null)
         {

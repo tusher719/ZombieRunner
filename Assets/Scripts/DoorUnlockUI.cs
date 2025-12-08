@@ -15,11 +15,12 @@ public class DoorUnlockUI : MonoBehaviour
 
     [Header("Settings")]
     public float messageDuration = 3f;
-    public float arrowDuration = 5f;
+    public float doorReachDistance = 5f; // Distance to hide arrow
 
     private Camera mainCamera;
-    private Vector3 doorWorldPosition;
+    private Transform doorTransform;
     private bool showingArrow = false;
+    private Transform playerTransform;
 
     void Awake()
     {
@@ -36,6 +37,13 @@ public class DoorUnlockUI : MonoBehaviour
     void Start()
     {
         mainCamera = Camera.main;
+        
+        // Find player
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null)
+        {
+            playerTransform = player.transform;
+        }
 
         if (unlockMessagePanel != null)
         {
@@ -52,6 +60,20 @@ public class DoorUnlockUI : MonoBehaviour
     {
         if (showingArrow && arrowIndicator != null && arrowIndicator.activeSelf)
         {
+            // Check distance to door
+            if (playerTransform != null && doorTransform != null)
+            {
+                float distance = Vector3.Distance(playerTransform.position, doorTransform.position);
+                
+                if (distance <= doorReachDistance)
+                {
+                    // Player reached door, hide arrow
+                    HideArrow();
+                    return;
+                }
+            }
+
+            // Update arrow position and rotation
             UpdateArrowPosition();
             
             // Blink effect
@@ -68,7 +90,13 @@ public class DoorUnlockUI : MonoBehaviour
 
     public void ShowUnlockMessage(Vector3 doorPosition)
     {
-        doorWorldPosition = doorPosition;
+        // Find door transform
+        GameObject door = GameObject.Find("ExitDoor");
+        if (door != null)
+        {
+            doorTransform = door.transform;
+        }
+
         StartCoroutine(DisplayUnlockMessage());
     }
 
@@ -102,12 +130,12 @@ public class DoorUnlockUI : MonoBehaviour
             unlockMessagePanel.SetActive(false);
         }
 
-        // Show arrow pointing to door
+        // Show arrow pointing to door (permanent until player reaches)
         if (arrowIndicator != null)
         {
             showingArrow = true;
             arrowIndicator.SetActive(true);
-            StartCoroutine(HideArrowAfterDelay());
+            // No timer! Arrow stays until player reaches door
         }
     }
 
@@ -120,9 +148,8 @@ public class DoorUnlockUI : MonoBehaviour
         }
     }
 
-    IEnumerator HideArrowAfterDelay()
+    void HideArrow()
     {
-        yield return new WaitForSeconds(arrowDuration);
         if (arrowIndicator != null)
         {
             arrowIndicator.SetActive(false);
@@ -132,35 +159,54 @@ public class DoorUnlockUI : MonoBehaviour
 
     void UpdateArrowPosition()
     {
-        if (mainCamera == null || arrowTransform == null)
+        if (mainCamera == null || arrowTransform == null || doorTransform == null)
             return;
 
-        // Convert world position to screen position
-        Vector3 screenPos = mainCamera.WorldToScreenPoint(doorWorldPosition);
+        // Get door screen position
+        Vector3 doorScreenPos = mainCamera.WorldToScreenPoint(doorTransform.position);
 
-        // Check if door is behind camera
-        if (screenPos.z < 0)
+        // If door is behind camera, flip the position
+        bool isBehind = doorScreenPos.z < 0;
+        
+        if (isBehind)
         {
-            screenPos.x = Screen.width - screenPos.x;
-            screenPos.y = Screen.height - screenPos.y;
-            screenPos.z = 0;
+            doorScreenPos.x = Screen.width - doorScreenPos.x;
+            doorScreenPos.y = Screen.height - doorScreenPos.y;
+            doorScreenPos.z = -doorScreenPos.z;
         }
 
         // Clamp to screen edges with margin
-        float margin = 100f;
-        screenPos.x = Mathf.Clamp(screenPos.x, margin, Screen.width - margin);
-        screenPos.y = Mathf.Clamp(screenPos.y, margin, Screen.height - margin);
+        float margin = 80f;
+        bool isOffscreen = false;
+
+        if (doorScreenPos.x < margin || doorScreenPos.x > Screen.width - margin ||
+            doorScreenPos.y < margin || doorScreenPos.y > Screen.height - margin ||
+            isBehind)
+        {
+            isOffscreen = true;
+        }
+
+        if (isOffscreen)
+        {
+            // Position arrow at screen edge
+            doorScreenPos.x = Mathf.Clamp(doorScreenPos.x, margin, Screen.width - margin);
+            doorScreenPos.y = Mathf.Clamp(doorScreenPos.y, margin, Screen.height - margin);
+        }
 
         // Update arrow position
-        arrowTransform.position = screenPos;
+        arrowTransform.position = doorScreenPos;
 
-        // Rotate arrow to point towards door
-        Vector3 direction = doorWorldPosition - mainCamera.transform.position;
-        direction.y = 0; // Keep arrow horizontal
-        if (direction != Vector3.zero)
-        {
-            float angle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
-            arrowTransform.rotation = Quaternion.Euler(0, 0, -angle);
-        }
+        // Calculate rotation to point towards door
+        Vector3 playerPos = mainCamera.transform.position;
+        Vector3 doorPos = doorTransform.position;
+        
+        // Get direction in screen space
+        Vector3 screenDir = doorScreenPos - new Vector3(Screen.width / 2, Screen.height / 2, 0);
+        
+        // Calculate angle
+        float angle = Mathf.Atan2(screenDir.y, screenDir.x) * Mathf.Rad2Deg;
+        
+        // Apply rotation (arrow sprite should point right by default)
+        arrowTransform.rotation = Quaternion.Euler(0, 0, angle);
     }
 }
