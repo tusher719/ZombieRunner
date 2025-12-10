@@ -43,7 +43,7 @@ Light:
   serializedVersion: 10
   m_Type: 2
   m_Shape: 0
-  m_Color: {r: 1, g: 0.12406184, b: 0, a: 1}
+  m_Color: {r: 1, g: 0.078431375, b: 0, a: 1}
   m_Intensity: 5
   m_Range: 10
   m_SpotAngle: 30
@@ -5276,7 +5276,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46b7f34c36a878c4898b656922047d7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelNumber: -1
+  levelNumber: 1
   isLocked: 1
   doorRenderer: {fileID: 5640309124716016179}
   lockedMaterial: {fileID: 2100000, guid: 1dc4ca9363419b641ae978c4bacc6248, type: 2}
