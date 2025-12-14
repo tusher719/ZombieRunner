@@ -23,12 +23,19 @@ public class MapManager : MonoBehaviour
     void LoadProgress()
     {
         currentUnlockedLevel = PlayerPrefs.GetInt("UnlockedLevel", 1);
+        
+        Debug.Log($"[MapManager] ========== LOADING PROGRESS ==========");
+        Debug.Log($"[MapManager] Current Unlocked Level: {currentUnlockedLevel}");
 
         for (int i = 0; i < 5; i++)
         {
             levelScores[i] = PlayerPrefs.GetInt($"Level{i + 1}Score", 0);
             levelCompleted[i] = PlayerPrefs.GetInt($"Level{i + 1}Completed", 0) == 1;
+            
+            Debug.Log($"[MapManager] Level {i + 1} - Score: {levelScores[i]}, Completed: {levelCompleted[i]}");
         }
+        
+        Debug.Log($"[MapManager] ========================================");
     }
 
     void UpdateUI()
@@ -39,7 +46,14 @@ public class MapManager : MonoBehaviour
         {
             totalScore += levelScores[i];
         }
-        totalScoreText.text = $"Total Score: {totalScore}";
+        
+        if (totalScoreText != null)
+        {
+            totalScoreText.text = $"Total Score: {totalScore}";
+        }
+
+        Debug.Log($"[MapManager] ========== UPDATING UI ==========");
+        Debug.Log($"[MapManager] Total Score: {totalScore}");
 
         // Update each level button
         for (int i = 0; i < levelButtons.Length; i++)
@@ -49,8 +63,12 @@ public class MapManager : MonoBehaviour
             bool isCompleted = levelCompleted[i];
             int score = levelScores[i];
 
-            levelButtons[i].Setup(levelNumber, isUnlocked, isCompleted, score);
+            Debug.Log($"[MapManager] Updating Level {levelNumber} Button - Unlocked: {isUnlocked}, Completed: {isCompleted}, Score: {score}");
+
+            levelButtons[i].Setup(levelNumber, isUnlocked, isCompleted, score, currentUnlockedLevel);
         }
+        
+        Debug.Log($"[MapManager] =====================================");
     }
 
     public void LoadLevel(int levelNumber)
@@ -62,20 +80,8 @@ public class MapManager : MonoBehaviour
             PlayerPrefs.SetInt("CurrentLevel", levelNumber);
             PlayerPrefs.Save();
 
-            // Load appropriate scene
-            if (levelNumber <= 3)
-            {
-                // Levels 1-3 are in Sandbox scene
-                SceneManager.LoadScene("Sandbox");
-            }
-            else if (levelNumber == 4)
-            {
-                SceneManager.LoadScene("Level4");
-            }
-            else if (levelNumber == 5)
-            {
-                SceneManager.LoadScene("Level5");
-            }
+            // UPDATED: All levels 1-5 are in Sandbox scene
+            SceneManager.LoadScene("Sandbox");
         }
         else
         {
@@ -91,23 +97,42 @@ public class MapManager : MonoBehaviour
     // Called when a level is completed
     public static void LevelCompleted(int levelNumber, int score)
     {
+        Debug.Log($"[MapManager] ========== LEVEL COMPLETED ==========");
+        Debug.Log($"[MapManager] Level {levelNumber} completed with score: {score}");
+        
         // Save completion
         PlayerPrefs.SetInt($"Level{levelNumber}Completed", 1);
+        Debug.Log($"[MapManager] Saved Level{levelNumber}Completed = 1");
         
         // Save score (only if better)
         int previousScore = PlayerPrefs.GetInt($"Level{levelNumber}Score", 0);
         if (score > previousScore)
         {
             PlayerPrefs.SetInt($"Level{levelNumber}Score", score);
+            Debug.Log($"[MapManager] Saved Level{levelNumber}Score = {score} (previous: {previousScore})");
+        }
+        else
+        {
+            Debug.Log($"[MapManager] Score {score} not better than previous {previousScore}, not updating");
         }
 
         // Unlock next level
         int currentUnlocked = PlayerPrefs.GetInt("UnlockedLevel", 1);
+        Debug.Log($"[MapManager] Current UnlockedLevel: {currentUnlocked}");
+        
         if (levelNumber >= currentUnlocked && levelNumber < 5)
         {
-            PlayerPrefs.SetInt("UnlockedLevel", levelNumber + 1);
+            int newUnlocked = levelNumber + 1;
+            PlayerPrefs.SetInt("UnlockedLevel", newUnlocked);
+            Debug.Log($"[MapManager] ✅ Unlocked Level {newUnlocked}! (UnlockedLevel = {newUnlocked})");
+        }
+        else
+        {
+            Debug.Log($"[MapManager] Level {levelNumber} already unlocked or max level reached. No unlock needed.");
         }
 
         PlayerPrefs.Save();
+        Debug.Log($"[MapManager] PlayerPrefs saved!");
+        Debug.Log($"[MapManager] =======================================");
     }
 }

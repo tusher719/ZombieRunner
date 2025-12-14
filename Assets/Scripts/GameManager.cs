@@ -70,15 +70,19 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log($"[GameManager] SetupLevel called for Level {levelNum}");
         
-        // Find all level areas - UPDATED to match your naming: "Level-1", "Level-2", "Level-3"
+        // Find all level areas (1-5) - All in Sandbox scene
         GameObject level1 = GameObject.Find("Level-1");
         GameObject level2 = GameObject.Find("Level-2");
         GameObject level3 = GameObject.Find("Level-3");
+        GameObject level4 = GameObject.Find("Level-4");
+        GameObject level5 = GameObject.Find("Level-5");
 
         // Deactivate all first
         if (level1 != null) level1.SetActive(false);
         if (level2 != null) level2.SetActive(false);
         if (level3 != null) level3.SetActive(false);
+        if (level4 != null) level4.SetActive(false);
+        if (level5 != null) level5.SetActive(false);
 
         // Activate current level and store reference
         GameObject currentLevelArea = null;
@@ -119,6 +123,30 @@ public class GameManager : MonoBehaviour
                 else
                 {
                     Debug.LogError("[GameManager] Level-3 not found!");
+                }
+                break;
+            case 4:
+                if (level4 != null)
+                {
+                    level4.SetActive(true);
+                    currentLevelArea = level4;
+                    Debug.Log("[GameManager] Level-4 Area activated");
+                }
+                else
+                {
+                    Debug.LogError("[GameManager] Level-4 not found!");
+                }
+                break;
+            case 5:
+                if (level5 != null)
+                {
+                    level5.SetActive(true);
+                    currentLevelArea = level5;
+                    Debug.Log("[GameManager] Level-5 Area activated");
+                }
+                else
+                {
+                    Debug.LogError("[GameManager] Level-5 not found!");
                 }
                 break;
         }
@@ -287,6 +315,8 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // ========== ZOMBIE & SCORE SYSTEM (UPDATED) ==========
+
     public void ZombieKilled()
     {
         zombiesKilled++;
@@ -297,32 +327,35 @@ public class GameManager : MonoBehaviour
         Debug.Log($"[GameManager] 🎯 Zombies killed: {zombiesKilled}/{zombiesToKill}");
         Debug.Log($"[GameManager] Score: {currentLevelScore}");
 
-        if (zombiesKilled >= zombiesToKill)
+        // Check if door should be unlocked (at threshold)
+        // IMPORTANT: Only unlock once, don't save yet!
+        if (zombiesKilled >= zombiesToKill && levelDoor != null && levelDoor.isLocked)
         {
-            Debug.Log($"[GameManager] ✅ Target reached! Calling LevelComplete()");
-            LevelComplete();
+            Debug.Log($"[GameManager] ✅ Target reached! Unlocking door...");
+            UnlockExitDoor();
         }
-        else
+        else if (zombiesKilled < zombiesToKill)
         {
             Debug.Log($"[GameManager] Need {zombiesToKill - zombiesKilled} more zombies");
         }
+        else if (zombiesKilled > zombiesToKill)
+        {
+            Debug.Log($"[GameManager] 💀 Extra kill! Total: {zombiesKilled} kills, Score: {currentLevelScore}");
+        }
     }
 
-    void LevelComplete()
+    void UnlockExitDoor()
     {
-        Debug.Log($"[GameManager] 🎉 Level {currentLevel} Complete!");
-        Debug.Log($"[GameManager] Checking door reference...");
+        Debug.Log($"[GameManager] 🚪 Unlocking door for Level {currentLevel}");
         
         if (levelDoor != null)
         {
             Debug.Log($"[GameManager] ✅ Door found: {levelDoor.gameObject.name}");
-            Debug.Log($"[GameManager] 🚪 Calling UnlockDoor()...");
             levelDoor.UnlockDoor();
         }
         else
         {
-            Debug.LogError("[GameManager] ❌ Door reference is NULL! Cannot unlock door!");
-            Debug.LogError("[GameManager] Trying to find door again...");
+            Debug.LogError("[GameManager] ❌ Door reference is NULL! Trying to find door...");
             FindCurrentLevelDoor();
             
             if (levelDoor != null)
@@ -335,14 +368,17 @@ public class GameManager : MonoBehaviour
                 Debug.LogError("[GameManager] ❌ Still can't find door!");
             }
         }
-
-        // Save progress
-        MapManager.LevelCompleted(currentLevel, currentLevelScore);
-        Debug.Log($"[GameManager] Progress saved to PlayerPrefs");
     }
 
     public void LoadNextLevel()
     {
+        // IMPORTANT: Save progress with FINAL score (including all extra kills!)
+        // This is called when player enters the unlocked door
+        Debug.Log($"[GameManager] 💾 Saving Level {currentLevel} progress...");
+        Debug.Log($"[GameManager] Final Stats - Kills: {zombiesKilled}, Score: {currentLevelScore}");
+        
+        MapManager.LevelCompleted(currentLevel, currentLevelScore);
+        
         // Return to map scene
         Time.timeScale = 1f;
         SceneManager.LoadScene("Map");
