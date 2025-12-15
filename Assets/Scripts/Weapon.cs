@@ -6,16 +6,28 @@ using UnityEngine.EventSystems;
 
 public class Weapon : MonoBehaviour
 {
+    [Header("Weapon Settings")]
     [SerializeField] Camera FPCamera;
     [SerializeField] float range = 100f;
     [SerializeField] float damage = 30f;
+    [SerializeField] float timeBetweenShots = 0.5f;
+    
+    [Header("Effects")]
     [SerializeField] ParticleSystem muzzleFlash;
     [SerializeField] GameObject hitEffect;
+    
+    [Header("Ammo System")]
     [SerializeField] Ammo ammoSlot;
     [SerializeField] AmmoType ammoType;
-    [SerializeField] float timeBetweenShots = 0.5f;
     [SerializeField] TextMeshProUGUI ammoText;
-
+    
+    [Header("Audio Settings")]
+    public AudioSource audioSource;
+    public AudioClip fireSound;
+    public AudioClip emptySound;
+    [Range(0f, 1f)]
+    public float fireVolume = 0.7f;
+    
     [Header("Crosshair Reference")]
     private CrosshairController crosshair;
 
@@ -32,6 +44,22 @@ public class Weapon : MonoBehaviour
     {
         // Find crosshair once at start
         crosshair = FindObjectOfType<CrosshairController>();
+        
+        // Get or add AudioSource component
+        if (audioSource == null)
+        {
+            audioSource = GetComponent<AudioSource>();
+            if (audioSource == null)
+            {
+                audioSource = gameObject.AddComponent<AudioSource>();
+            }
+        }
+        
+        // Configure AudioSource
+        audioSource.playOnAwake = false;
+        audioSource.loop = false;
+        audioSource.spatialBlend = 0.5f;
+        audioSource.volume = 1f;
     }
 
     private IEnumerator InitializeWeapon()
@@ -90,6 +118,7 @@ public class Weapon : MonoBehaviour
         return EventSystem.current != null && EventSystem.current.IsPointerOverGameObject();
     }
 
+    // Called by mobile shoot button
     public void OnShootButtonPressed()
     {
         if (isWeaponReady && canShoot)
@@ -110,6 +139,9 @@ public class Weapon : MonoBehaviour
         
         if (ammoSlot.GetAmmoAmount(ammoType) > 0)
         {
+            // Play fire sound
+            PlayFireSound();
+            
             // Notify crosshair IMMEDIATELY when shooting starts
             if (crosshair != null)
             {
@@ -120,6 +152,11 @@ public class Weapon : MonoBehaviour
             ProcessRaycast();
             ammoSlot.ReduceCurrentAmmo(ammoType);
         }
+        else
+        {
+            // Play empty sound when no ammo
+            PlayEmptySound();
+        }
         
         yield return new WaitForSeconds(timeBetweenShots);
         canShoot = true;
@@ -127,7 +164,10 @@ public class Weapon : MonoBehaviour
 
     private void PlayMuzzleFlash()
     {
-        muzzleFlash.Play();
+        if (muzzleFlash != null)
+        {
+            muzzleFlash.Play();
+        }
     }
 
     private void ProcessRaycast()
@@ -136,15 +176,38 @@ public class Weapon : MonoBehaviour
         if (Physics.Raycast(FPCamera.transform.position, FPCamera.transform.forward, out hit, range))
         {
             CreateHitImpact(hit);
+            
+            // Try to damage enemy (no tag check needed!)
             EnemyHealth target = hit.transform.GetComponent<EnemyHealth>();
-            if (target == null) return;
-            target.TakeDamage(damage);
+            if (target != null)
+            {
+                target.TakeDamage(damage);
+            }
         }
     }
 
     private void CreateHitImpact(RaycastHit hit)
     {
-        GameObject impact = Instantiate(hitEffect, hit.point, Quaternion.LookRotation(hit.normal));
-        Destroy(impact, .1f);
+        if (hitEffect != null)
+        {
+            GameObject impact = Instantiate(hitEffect, hit.point, Quaternion.LookRotation(hit.normal));
+            Destroy(impact, 0.1f);
+        }
+    }
+
+    void PlayFireSound()
+    {
+        if (audioSource != null && fireSound != null)
+        {
+            audioSource.PlayOneShot(fireSound, fireVolume);
+        }
+    }
+
+    void PlayEmptySound()
+    {
+        if (audioSource != null && emptySound != null)
+        {
+            audioSource.PlayOneShot(emptySound, fireVolume * 0.5f);
+        }
     }
 }
