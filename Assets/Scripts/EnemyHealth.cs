@@ -6,6 +6,7 @@ public class EnemyHealth : MonoBehaviour
 {
     [SerializeField] float hitPoints = 100f;
     [SerializeField] private EnemyHealthbar _healthbar;
+    [SerializeField] private GameObject deathParticle;
 
     private float maxHealth;
     bool isDead = false;
@@ -14,6 +15,11 @@ public class EnemyHealth : MonoBehaviour
     {
         maxHealth = hitPoints;
         _healthbar.UpdateHealthBar(maxHealth, hitPoints);
+        
+        if (deathParticle != null)
+        {
+            deathParticle.SetActive(false);
+        }
     }
 
     public bool IsDead()
@@ -46,9 +52,18 @@ public class EnemyHealth : MonoBehaviour
         if (isDead) return;
         isDead = true;
         
-        // Update healthbar to zero and hide it
         _healthbar.UpdateHealthBar(maxHealth, 0);
         _healthbar.HideHealthBar();
+
+        if (deathParticle != null)
+        {
+            deathParticle.SetActive(true);
+            ParticleSystem ps = deathParticle.GetComponent<ParticleSystem>();
+            if (ps != null)
+            {
+                ps.Play();
+            }
+        }
 
         GetComponent<Animator>().SetTrigger("die");
 
@@ -57,6 +72,6 @@ public class EnemyHealth : MonoBehaviour
             GameManager.Instance.ZombieKilled();
         }
 
-        Destroy(gameObject, 3f);
+        Destroy(gameObject, 1f);
     }
 }

@@ -1,0 +1,561 @@
+; FBX 7.7.0 project file
+; ----------------------------------------------------
+
+FBXHeaderExtension:  {
+	FBXHeaderVersion: 1004
+	FBXVersion: 7700
+	CreationTimeStamp:  {
+		Version: 1000
+		Year: 2025
+		Month: 12
+		Day: 16
+		Hour: 23
+		Minute: 12
+		Second: 14
+		Millisecond: 606
+	}
+	Creator: "FBX SDK/FBX Plugins version 2020.3.4"
+	OtherFlags:  {
+		TCDefinition: 127
+	}
+	SceneInfo: "SceneInfo::GlobalInfo", "UserData" {
+		Type: "UserData"
+		Version: 100
+		MetaData:  {
+			Version: 100
+			Title: ""
+			Subject: ""
+			Author: ""
+			Keywords: ""
+			Revision: ""
+			Comment: ""
+		}
+		Properties70:  {
+			P: "DocumentUrl", "KString", "Url", "", "D:\Defense\Game Objects\Fbx\Gun\bullet.fbx"
+			P: "SrcDocumentUrl", "KString", "Url", "", "D:\Defense\Game Objects\Fbx\Gun\bullet.fbx"
+			P: "Original", "Compound", "", ""
+			P: "Original|ApplicationVendor", "KString", "", "", "Autodesk"
+			P: "Original|ApplicationName", "KString", "", "", "Maya"
+			P: "Original|ApplicationVersion", "KString", "", "", "2024"
+			P: "Original|DateTime_GMT", "DateTime", "", "", "16/12/2025 17:12:14.605"
+			P: "Original|FileName", "KString", "", "", "D:\Defense\Game Objects\Fbx\Gun\bullet.fbx"
+			P: "LastSaved", "Compound", "", ""
+			P: "LastSaved|ApplicationVendor", "KString", "", "", "Autodesk"
+			P: "LastSaved|ApplicationName", "KString", "", "", "Maya"
+			P: "LastSaved|ApplicationVersion", "KString", "", "", "2024"
+			P: "LastSaved|DateTime_GMT", "DateTime", "", "", "16/12/2025 17:12:14.605"
+			P: "Original|ApplicationActiveProject", "KString", "", "", "D:\Defense\Game Objects\Fbx\Gun"
+			P: "Original|ApplicationNativeFile", "KString", "", "", "D:\Defense\Game Objects\Gun\scenes\g1.ma"
+		}
+	}
+}
+GlobalSettings:  {
+	Version: 1000
+	Properties70:  {
+		P: "UpAxis", "int", "Integer", "",1
+		P: "UpAxisSign", "int", "Integer", "",1
+		P: "FrontAxis", "int", "Integer", "",2
+		P: "FrontAxisSign", "int", "Integer", "",1
+		P: "CoordAxis", "int", "Integer", "",0
+		P: "CoordAxisSign", "int", "Integer", "",1
+		P: "OriginalUpAxis", "int", "Integer", "",1
+		P: "OriginalUpAxisSign", "int", "Integer", "",1
+		P: "UnitScaleFactor", "double", "Number", "",1
+		P: "OriginalUnitScaleFactor", "double", "Number", "",1
+		P: "AmbientColor", "ColorRGB", "Color", "",0,0,0
+		P: "DefaultCamera", "KString", "", "", "Producer Perspective"
+		P: "TimeMode", "enum", "", "",11
+		P: "TimeProtocol", "enum", "", "",2
+		P: "SnapOnFrameMode", "enum", "", "",0
+		P: "TimeSpanStart", "KTime", "Time", "",0
+		P: "TimeSpanStop", "KTime", "Time", "",384884650000
+		P: "CustomFrameRate", "double", "Number", "",-1
+		P: "TimeMarker", "Compound", "", ""
+		P: "CurrentTimeMarker", "int", "Integer", "",-1
+	}
+}
+
+; Documents Description
+;------------------------------------------------------------------
+
+Documents:  {
+	Count: 1
+	Document: 1652376610032, "", "Scene" {
+		Properties70:  {
+			P: "SourceObject", "object", "", ""
+			P: "ActiveAnimStackName", "KString", "", "", "Take 001"
+		}
+		RootNode: 0
+	}
+}
+
+; Document References
+;------------------------------------------------------------------
+
+References:  {
+}
+
+; Object definitions
+;------------------------------------------------------------------
+
+Definitions:  {
+	Version: 100
+	Count: 8
+	ObjectType: "GlobalSettings" {
+		Count: 1
+	}
+	ObjectType: "AnimationStack" {
+		Count: 1
+		PropertyTemplate: "FbxAnimStack" {
+			Properties70:  {
+				P: "Description", "KString", "", "", ""
+				P: "LocalStart", "KTime", "Time", "",0
+				P: "LocalStop", "KTime", "Time", "",0
+				P: "ReferenceStart", "KTime", "Time", "",0
+				P: "ReferenceStop", "KTime", "Time", "",0
+			}
+		}
+	}
+	ObjectType: "AnimationLayer" {
+		Count: 1
+		PropertyTemplate: "FbxAnimLayer" {
+			Properties70:  {
+				P: "Weight", "Number", "", "A",100
+				P: "Mute", "bool", "", "",0
+				P: "Solo", "bool", "", "",0
+				P: "Lock", "bool", "", "",0
+				P: "Color", "ColorRGB", "Color", "",0.8,0.8,0.8
+				P: "BlendMode", "enum", "", "",0
+				P: "RotationAccumulationMode", "enum", "", "",0
+				P: "ScaleAccumulationMode", "enum", "", "",0
+				P: "BlendModeBypass", "ULongLong", "", "",0
+			}
+		}
+	}
+	ObjectType: "Geometry" {
+		Count: 1
+		PropertyTemplate: "FbxMesh" {
+			Properties70:  {
+				P: "Color", "ColorRGB", "Color", "",0.8,0.8,0.8
+				P: "BBoxMin", "Vector3D", "Vector", "",0,0,0
+				P: "BBoxMax", "Vector3D", "Vector", "",0,0,0
+				P: "Primary Visibility", "bool", "", "",1
+				P: "Casts Shadows", "bool", "", "",1
+				P: "Receive Shadows", "bool", "", "",1
+			}
+		}
+	}
+	ObjectType: "Material" {
+		Count: 1
+		PropertyTemplate: "FbxSurfaceMaterial" {
+			Properties70:  {
+				P: "ShadingModel", "KString", "", "", "Unknown"
+				P: "MultiLayer", "bool", "", "",0
+			}
+		}
+	}
+	ObjectType: "Implementation" {
+		Count: 1
+		PropertyTemplate: "FbxImplementation" {
+			Properties70:  {
+				P: "ShaderLanguage", "KString", "", "", "MentalRaySL"
+				P: "ShaderLanguageVersion", "KString", "", "", ""
+				P: "RenderAPI", "KString", "", "", "MentalRay"
+				P: "RenderAPIVersion", "KString", "", "", ""
+				P: "RootBindingName", "KString", "", "", ""
+				P: "Constants", "Compound", "", ""
+			}
+		}
+	}
+	ObjectType: "BindingTable" {
+		Count: 1
+		PropertyTemplate: "FbxBindingTable" {
+			Properties70:  {
+				P: "TargetName", "KString", "", "", ""
+				P: "TargetType", "KString", "", "", ""
+				P: "CodeAbsoluteURL", "KString", "XRefUrl", "", ""
+				P: "CodeRelativeURL", "KString", "XRefUrl", "", ""
+				P: "CodeTAG", "KString", "", "", "shader"
+				P: "DescAbsoluteURL", "KString", "XRefUrl", "", ""
+				P: "DescRelativeURL", "KString", "XRefUrl", "", ""
+				P: "DescTAG", "KString", "", "", "shader"
+			}
+		}
+	}
+	ObjectType: "Model" {
+		Count: 1
+		PropertyTemplate: "FbxNode" {
+			Properties70:  {
+				P: "QuaternionInterpolate", "enum", "", "",0
+				P: "RotationOffset", "Vector3D", "Vector", "",0,0,0
+				P: "RotationPivot", "Vector3D", "Vector", "",0,0,0
+				P: "ScalingOffset", "Vector3D", "Vector", "",0,0,0
+				P: "ScalingPivot", "Vector3D", "Vector", "",0,0,0
+				P: "TranslationActive", "bool", "", "",0
+				P: "TranslationMin", "Vector3D", "Vector", "",0,0,0
+				P: "TranslationMax", "Vector3D", "Vector", "",0,0,0
+				P: "TranslationMinX", "bool", "", "",0
+				P: "TranslationMinY", "bool", "", "",0
+				P: "TranslationMinZ", "bool", "", "",0
+				P: "TranslationMaxX", "bool", "", "",0
+				P: "TranslationMaxY", "bool", "", "",0
+				P: "TranslationMaxZ", "bool", "", "",0
+				P: "RotationOrder", "enum", "", "",0
+				P: "RotationSpaceForLimitOnly", "bool", "", "",0
+				P: "RotationStiffnessX", "double", "Number", "",0
+				P: "RotationStiffnessY", "double", "Number", "",0
+				P: "RotationStiffnessZ", "double", "Number", "",0
+				P: "AxisLen", "double", "Number", "",10
+				P: "PreRotation", "Vector3D", "Vector", "",0,0,0
+				P: "PostRotation", "Vector3D", "Vector", "",0,0,0
+				P: "RotationActive", "bool", "", "",0
+				P: "RotationMin", "Vector3D", "Vector", "",0,0,0
+				P: "RotationMax", "Vector3D", "Vector", "",0,0,0
+				P: "RotationMinX", "bool", "", "",0
+				P: "RotationMinY", "bool", "", "",0
+				P: "RotationMinZ", "bool", "", "",0
+				P: "RotationMaxX", "bool", "", "",0
+				P: "RotationMaxY", "bool", "", "",0
+				P: "RotationMaxZ", "bool", "", "",0
+				P: "InheritType", "enum", "", "",0
+				P: "ScalingActive", "bool", "", "",0
+				P: "ScalingMin", "Vector3D", "Vector", "",0,0,0
+				P: "ScalingMax", "Vector3D", "Vector", "",1,1,1
+				P: "ScalingMinX", "bool", "", "",0
+				P: "ScalingMinY", "bool", "", "",0
+				P: "ScalingMinZ", "bool", "", "",0
+				P: "ScalingMaxX", "bool", "", "",0
+				P: "ScalingMaxY", "bool", "", "",0
+				P: "ScalingMaxZ", "bool", "", "",0
+				P: "GeometricTranslation", "Vector3D", "Vector", "",0,0,0
+				P: "GeometricRotation", "Vector3D", "Vector", "",0,0,0
+				P: "GeometricScaling", "Vector3D", "Vector", "",1,1,1
+				P: "MinDampRangeX", "double", "Number", "",0
+				P: "MinDampRangeY", "double", "Number", "",0
+				P: "MinDampRangeZ", "double", "Number", "",0
+				P: "MaxDampRangeX", "double", "Number", "",0
+				P: "MaxDampRangeY", "double", "Number", "",0
+				P: "MaxDampRangeZ", "double", "Number", "",0
+				P: "MinDampStrengthX", "double", "Number", "",0
+				P: "MinDampStrengthY", "double", "Number", "",0
+				P: "MinDampStrengthZ", "double", "Number", "",0
+				P: "MaxDampStrengthX", "double", "Number", "",0
+				P: "MaxDampStrengthY", "double", "Number", "",0
+				P: "MaxDampStrengthZ", "double", "Number", "",0
+				P: "PreferedAngleX", "double", "Number", "",0
+				P: "PreferedAngleY", "double", "Number", "",0
+				P: "PreferedAngleZ", "double", "Number", "",0
+				P: "LookAtProperty", "object", "", ""
+				P: "UpVectorProperty", "object", "", ""
+				P: "Show", "bool", "", "",1
+				P: "NegativePercentShapeSupport", "bool", "", "",1
+				P: "DefaultAttributeIndex", "int", "Integer", "",-1
+				P: "Freeze", "bool", "", "",0
+				P: "LODBox", "bool", "", "",0
+				P: "Lcl Translation", "Lcl Translation", "", "A",0,0,0
+				P: "Lcl Rotation", "Lcl Rotation", "", "A",0,0,0
+				P: "Lcl Scaling", "Lcl Scaling", "", "A",1,1,1
+				P: "Visibility", "Visibility", "", "A",1
+				P: "Visibility Inheritance", "Visibility Inheritance", "", "",1
+			}
+		}
+	}
+}
+
+; Object properties
+;------------------------------------------------------------------
+
+Objects:  {
+	Geometry: 1654537298544, "Geometry::", "Mesh" {
+		Vertices: *336 {
+			a: -7.07075023651123,88.2760696411133,54.8553771972656,-7.21920537948608,88.2773284912109,54.8535842895508,-7.00954675674438,88.0951995849609,54.5782089233398,-7.30645704269409,88.0977172851562,54.5746231079102,-6.77007722854614,88.2714614868164,54.5796813964844,-6.76752376556396,88.5683822631836,54.5773582458496,-6.95081281661987,88.3642654418945,54.8561134338379,-6.94953489303589,88.5127334594727,54.8549499511719,-7.48255920410156,88.3367767333984,54.5706024169922,-7.30645704269409,88.0977172851562,54.5746231079102,-7.30725717544556,88.396858215332,54.8515739440918,-7.21920537948608,88.2773284912109,54.8535842895508,-6.68899345397949,88.2265167236328,52.6179847717285,-6.96717405319214,88.0215682983398,52.6162719726562,-6.68588972091675,88.5716247558594,52.6152839660645,-6.89081001281738,88.8497924804688,52.6106147766113,-7.23630666732788,88.8527374267578,52.6064453125,-7.51408052444458,88.6479110717773,52.6047286987305,-7.51705169677734,88.3023986816406,52.6074333190918,-7.31226348876953,88.0246353149414,52.6120986938477,-6.91072463989258,88.8629455566406,54.2687683105469,-6.89081001281738,88.8497924804688,52.6106147766113,-7.25622129440308,88.8658828735352,54.2645988464355,-7.23630666732788,88.8527374267578,52.6064453125,-7.30725717544556,88.396858215332,54.8515739440918,-7.30611181259155,88.5457229614258,54.8504066467285,-7.48255920410156,88.3367767333984,54.5706024169922,-7.48013782501221,88.6341094970703,54.5682830810547,-7.53399467468262,88.6610641479492,54.262882232666,-7.51408052444458,88.6479110717773,52.6047286987305,-7.53696632385254,88.3155517578125,54.2655868530273,-7.51705169677734,88.3023986816406,52.6074333190918,-6.95081281661987,88.3642654418945,54.8561134338379,-6.94953489303589,88.5127334594727,54.8549499511719,-7.07075023651123,88.2760696411133,54.8553771972656,-7.21920537948608,88.2773284912109,54.8535842895508,-7.30725717544556,88.396858215332,54.8515739440918,-7.30611181259155,88.5457229614258,54.8504066467285,-7.18658113479614,88.6337966918945,54.851146697998,-7.03771877288818,88.6326599121094,54.8529357910156,
+-6.68899345397949,88.2265167236328,52.6179847717285,-6.70890665054321,88.2396774291992,54.2761383056641,-6.96717405319214,88.0215682983398,52.6162719726562,-6.98708724975586,88.0347137451172,54.2744216918945,-7.31226348876953,88.0246353149414,52.6120986938477,-7.33217811584473,88.0377883911133,54.2702522277832,-7.51705169677734,88.3023986816406,52.6074333190918,-7.53696632385254,88.3155517578125,54.2655868530273,-6.96717405319214,88.0215682983398,52.6162719726562,-6.98708724975586,88.0347137451172,54.2744216918945,-7.31226348876953,88.0246353149414,52.6120986938477,-7.33217811584473,88.0377883911133,54.2702522277832,-6.70580434799194,88.5847702026367,54.2734336853027,-6.68588972091675,88.5716247558594,52.6152839660645,-6.91072463989258,88.8629455566406,54.2687683105469,-6.89081001281738,88.8497924804688,52.6106147766113,-6.76752376556396,88.5683822631836,54.5773582458496,-6.77007722854614,88.2714614868164,54.5796813964844,-6.70580434799194,88.5847702026367,54.2734336853027,-6.70890665054321,88.2396774291992,54.2761383056641,-7.51408052444458,88.6479110717773,52.6047286987305,-7.53399467468262,88.6610641479492,54.262882232666,-7.23630666732788,88.8527374267578,52.6064453125,-7.25622129440308,88.8658828735352,54.2645988464355,-7.53399467468262,88.6610641479492,54.262882232666,-7.53696632385254,88.3155517578125,54.2655868530273,-7.48013782501221,88.6341094970703,54.5682830810547,-7.48255920410156,88.3367767333984,54.5706024169922,-7.00954675674438,88.0951995849609,54.5782089233398,-7.30645704269409,88.0977172851562,54.5746231079102,-6.98708724975586,88.0347137451172,54.2744216918945,-7.33217811584473,88.0377883911133,54.2702522277832,-6.76752376556396,88.5683822631836,54.5773582458496,-6.94376039505005,88.8078460693359,54.5733451843262,-6.94953489303589,88.5127334594727,54.8549499511719,-7.03771877288818,88.6326599121094,54.8529357910156,-7.48013782501221,88.6341094970703,54.5682830810547,-7.24107646942139,88.8102340698242,54.569751739502,-7.53399467468262,88.6610641479492,54.262882232666,-7.25622129440308,88.8658828735352,54.2645988464355,
+-7.00954675674438,88.0951995849609,54.5782089233398,-6.77007722854614,88.2714614868164,54.5796813964844,-7.07075023651123,88.2760696411133,54.8553771972656,-6.95081281661987,88.3642654418945,54.8561134338379,-7.18658113479614,88.6337966918945,54.851146697998,-7.03771877288818,88.6326599121094,54.8529357910156,-7.24107646942139,88.8102340698242,54.569751739502,-6.94376039505005,88.8078460693359,54.5733451843262,-6.70890665054321,88.2396774291992,54.2761383056641,-6.68899345397949,88.2265167236328,52.6179847717285,-6.70580434799194,88.5847702026367,54.2734336853027,-6.68588972091675,88.5716247558594,52.6152839660645,-6.98708724975586,88.0347137451172,54.2744216918945,-6.70890665054321,88.2396774291992,54.2761383056641,-7.00954675674438,88.0951995849609,54.5782089233398,-6.77007722854614,88.2714614868164,54.5796813964844,-6.70580434799194,88.5847702026367,54.2734336853027,-6.91072463989258,88.8629455566406,54.2687683105469,-6.76752376556396,88.5683822631836,54.5773582458496,-6.94376039505005,88.8078460693359,54.5733451843262,-7.30611181259155,88.5457229614258,54.8504066467285,-7.18658113479614,88.6337966918945,54.851146697998,-7.48013782501221,88.6341094970703,54.5682830810547,-7.24107646942139,88.8102340698242,54.569751739502,-7.30645704269409,88.0977172851562,54.5746231079102,-7.48255920410156,88.3367767333984,54.5706024169922,-7.33217811584473,88.0377883911133,54.2702522277832,-7.53696632385254,88.3155517578125,54.2655868530273,-7.24107646942139,88.8102340698242,54.569751739502,-6.94376039505005,88.8078460693359,54.5733451843262,-7.25622129440308,88.8658828735352,54.2645988464355,-6.91072463989258,88.8629455566406,54.2687683105469
+		} 
+		PolygonVertexIndex: *124 {
+			a: 2,0,1,-4,6,4,5,-8,10,8,9,-12,12,13,-15,15,14,13,-17,17,16,13,-19,13,19,-19,22,20,21,-24,26,24,25,-28,30,28,29,-32,32,33,-35,35,34,33,-37,37,36,33,-39,33,39,-39,42,40,41,-44,46,44,45,-48,50,48,49,-52,54,52,53,-56,58,56,57,-60,62,60,61,-64,66,64,65,-68,70,68,69,-72,74,72,73,-76,78,76,77,-80,82,80,81,-84,86,84,85,-88,90,88,89,-92,94,92,93,-96,98,96,97,-100,102,100,101,-104,106,104,105,-108,110,108,109,-112
+		} 
+		Edges: *118 {
+			a: 1,0,2,3,5,4,6,7,9,8,10,11,12,13,14,15,17,18,19,21,22,23,24,27,26,28,29,31,30,32,33,35,34,36,37,38,39,40,41,43,44,45,47,48,49,50,53,52,54,55,57,56,58,59,61,60,62,63,65,64,66,67,69,68,70,71,73,72,74,75,77,76,78,79,81,80,82,83,85,84,86,87,89,88,90,91,93,92,94,95,97,96,98,99,101,100,102,103,105,104,106,107,109,108,110,111,113,112,114,115,117,116,118,119,121,120,122,123
+		} 
+		GeometryVersion: 124
+		LayerElementNormal: 0 {
+			Version: 102
+			Name: ""
+			MappingInformationType: "ByPolygonVertex"
+			ReferenceInformationType: "Direct"
+			Normals: *372 {
+				a: -0.0137097975239158,-0.838757991790771,0.544331789016724,-0.0137097975239158,-0.838757991790771,0.544331789016724,-0.0137069318443537,-0.838757038116455,0.544333338737488,-0.0137069318443537,-0.838757038116455,0.544333338737488,0.836531937122345,-0.00290829292498529,0.547910451889038,0.836531937122345,-0.00290829292498529,0.547910451889038,0.836529552936554,-0.00290120951831341,0.547914087772369,0.836529552936554,-0.00290120951831341,0.547914087772369,-0.685210883617401,-0.495799124240875,0.53354412317276,-0.685210883617401,-0.495799124240875,0.53354412317276,-0.685208439826965,-0.495800733566284,0.533545792102814,-0.685208439826965,-0.495800733566284,0.533545792102814,0.012009902857244,-0.00793682783842087,-0.99989640712738,0.012009902857244,-0.00793682783842087,-0.99989640712738,0.012009902857244,-0.00793682783842087,-0.99989640712738,0.0120040429756045,-0.00793383549898863,-0.999896466732025,0.0120040429756045,-0.00793383549898863,-0.999896466732025,0.0119968941435218,-0.00793317705392838,-0.999896645545959,0.0119968941435218,-0.00793317705392838,-0.999896645545959,0.012020330876112,-0.00792558677494526,-0.999896287918091,0.012020330876112,-0.00792558677494526,-0.999896287918091,0.0120175620540977,-0.00792799517512321,-0.999896347522736,0.0120175620540977,-0.00792799517512321,-0.999896347522736,0.0120113361626863,-0.00794019643217325,-0.999896347522736,0.0120113361626863,-0.00794019643217325,-0.999896347522736,0.0120113361626863,-0.00794019643217325,-0.999896347522736,0.00860028713941574,0.99993234872818,-0.00782811641693115,0.00860028713941574,0.99993234872818,-0.00782811641693115,0.00860028713941574,0.99993234872818,-0.00782811641693115,0.00860028713941574,0.99993234872818,-0.00782811641693115,-0.849383950233459,0.0106695722788572,0.527667701244354,-0.849383950233459,0.0106695722788572,0.527667701244354,-0.849504172801971,0.0110407657921314,0.527466356754303,-0.849504172801971,0.0110407657921314,0.527466356754303,-0.999890923500061,0.00850610621273518,-0.0120757110416889,-0.999890923500061,0.00850610621273518,-0.0120757110416889,
+-0.999891042709351,0.00850321631878614,-0.0120762847363949,-0.999891042709351,0.00850321631878614,-0.0120762847363949,-0.0120038669556379,0.007949348539114,0.999896287918091,-0.0120038669556379,0.007949348539114,0.999896287918091,-0.0120038669556379,0.007949348539114,0.999896287918091,-0.0120070688426495,0.00795099604874849,0.999896287918091,-0.0120070688426495,0.00795099604874849,0.999896287918091,-0.0120142167434096,0.0079591516405344,0.999896109104156,-0.0120142167434096,0.0079591516405344,0.999896109104156,-0.0120043456554413,0.00792867224663496,0.99989652633667,-0.0120043456554413,0.00792867224663496,0.99989652633667,-0.0120074348524213,0.00789522938430309,0.999896824359894,-0.0120074348524213,0.00789522938430309,0.999896824359894,-0.0119733922183514,0.00796187575906515,0.999896645545959,-0.0119733922183514,0.00796187575906515,0.999896645545959,-0.0119733922183514,0.00796187575906515,0.999896645545959,0.593054711818695,-0.805048882961273,0.0135079147294164,0.593054711818695,-0.805048882961273,0.0135079147294164,0.593054711818695,-0.805048882961273,0.0135079147294164,0.593054711818695,-0.805048882961273,0.0135079147294164,-0.80484139919281,-0.593469262123108,-0.00495890434831381,-0.80484139919281,-0.593469262123108,-0.00495890434831381,-0.80484139919281,-0.593469262123108,-0.00495890434831381,-0.80484139919281,-0.593469262123108,-0.00495890434831381,-0.00899129919707775,-0.999929010868073,0.00782339833676815,-0.00899129919707775,-0.999929010868073,0.00782339833676815,-0.00899127870798111,-0.999929010868073,0.00782339461147785,-0.00899127870798111,-0.999929010868073,0.00782339461147785,0.805073142051697,0.593154788017273,0.00496417470276356,0.805073142051697,0.593154788017273,0.00496417470276356,0.805073142051697,0.593154788017273,0.00496417470276356,0.805073142051697,0.593154788017273,0.00496417470276356,0.98004537820816,-0.00687374267727137,0.198654815554619,0.98004537820816,-0.00687374267727137,0.198654815554619,0.980119347572327,-0.00725912256166339,0.198276042938232,0.980119347572327,-0.00725912256166339,0.198276042938232,
+-0.59337043762207,0.80481618642807,-0.0135101117193699,-0.59337043762207,0.80481618642807,-0.0135101117193699,-0.593370795249939,0.804815828800201,-0.0135102234780788,-0.593370795249939,0.804815828800201,-0.0135102234780788,-0.984607458114624,0.00983460713177919,0.174503818154335,-0.984607458114624,0.00983460713177919,0.174503818154335,-0.984530568122864,0.009385596960783,0.174961909651756,-0.984530568122864,0.009385596960783,0.174961909651756,-0.0106906229630113,-0.980847597122192,0.194483041763306,-0.0106906229630113,-0.980847597122192,0.194483041763306,-0.0110729802399874,-0.980920910835266,0.194091647863388,-0.0110729802399874,-0.980920910835266,0.194091647863388,0.67248147726059,0.504009485244751,0.541980743408203,0.67248147726059,0.504009485244751,0.541980743408203,0.672823488712311,0.503791213035583,0.541759073734283,0.672823488712311,0.503791213035583,0.541759073734283,-0.584898352622986,0.792420983314514,0.173097938299179,-0.584898352622986,0.792420983314514,0.173097938299179,-0.585172116756439,0.792130827903748,0.173500314354897,-0.585172116756439,0.792130827903748,0.173500314354897,0.493211925029755,-0.674648106098175,0.549173891544342,0.493211925029755,-0.674648106098175,0.549173891544342,0.492994993925095,-0.674994468688965,0.548943102359772,0.492994993925095,-0.674994468688965,0.548943102359772,4.42490636487491e-05,0.847225964069366,0.531232714653015,4.42490636487491e-05,0.847225964069366,0.531232714653015,0.000406115315854549,0.847342848777771,0.531046092510223,0.000406115315854549,0.847342848777771,0.531046092510223,0.999887466430664,-0.00889480952173471,0.0120787667110562,0.999887466430664,-0.00889480952173471,0.0120787667110562,0.999887526035309,-0.00889770686626434,0.0120793571695685,0.999887526035309,-0.00889770686626434,0.0120793571695685,0.580371141433716,-0.789394319057465,0.200065061450005,0.580371141433716,-0.789394319057465,0.200065061450005,0.580069124698639,-0.789733290672302,0.199602410197258,0.580069124698639,-0.789733290672302,0.199602410197258,0.788657307624817,0.584194362163544,0.191668123006821,
+0.788657307624817,0.584194362163544,0.191668123006821,0.788996934890747,0.583884298801422,0.191214457154274,0.788996934890747,0.583884298801422,0.191214457154274,-0.506458699703217,0.682976007461548,0.526349067687988,-0.506458699703217,0.682976007461548,0.526349067687988,-0.506448805332184,0.682991206645966,0.526338875293732,-0.506448805332184,0.682991206645966,0.526338875293732,-0.793208956718445,-0.581275343894958,0.181490123271942,-0.793208956718445,-0.581275343894958,0.181490123271942,-0.792920172214508,-0.581541299819946,0.18189948797226,-0.792920172214508,-0.581541299819946,0.18189948797226,0.00575666548684239,0.983809173107147,0.179126426577568,0.00575666548684239,0.983809173107147,0.179126426577568,0.0062134824693203,0.983887851238251,0.178678885102272,0.0062134824693203,0.983887851238251,0.178678885102272
+			} 
+			NormalsW: *124 {
+				a: 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+			} 
+		}
+		LayerElementUV: 0 {
+			Version: 101
+			Name: "DiffuseUV"
+			MappingInformationType: "ByPolygonVertex"
+			ReferenceInformationType: "IndexToDirect"
+			UV: *224 {
+				a: 0.455045491456985,0.66623854637146,0.512974500656128,0.657011806964874,0.455045491456985,0.789960622787476,0.557924866676331,0.778636932373047,0.352166086435318,0.778636932373047,0.256250828504562,0.722437739372253,0.397116482257843,0.657011806964874,0.347417801618576,0.625137627124786,0.653840124607086,0.722437739372253,0.557924866676331,0.778636932373047,0.562673151493073,0.625137627124786,0.512974500656128,0.657011806964874,0.657005667686462,0.187706544995308,0.657005667686462,0.329043328762054,0.543996572494507,0.102988347411156,0.402814418077469,0.102988347411156,0.317978471517563,0.216225534677505,0.317978471517563,0.357142925262451,0.430987536907196,0.441861122846603,0.572169721126556,0.441861122846603,0.5772345662117,0.470799505710602,0.5772345662117,0.0820185020565987,0.657955348491669,0.470799505710602,0.657955348491669,0.0820185020565987,0.575968325138092,0.917037904262543,0.526269674301147,0.884744346141815,0.667135298252106,0.819318413734436,0.571220099925995,0.763538599014282,0.738992631435394,0.470799505710602,0.738992631435394,0.0820185020565987,0.82002991437912,0.470799505710602,0.82002991437912,0.0820185020565987,0.563622832298279,0.940524160861969,0.426872372627258,0.940524160861969,0.645293235778809,0.831480920314789,0.645293235778809,0.694757521152496,0.536082804203033,0.612975120544434,0.399648874998093,0.612975120544434,0.317978471517563,0.722018301486969,0.317978471517563,0.858741760253906,0.414843380451202,0.0820185020565987,0.414843380451202,0.470799505710602,0.334122627973557,0.0820185020565987,0.334122627973557,0.470799505710602,0.253085315227509,0.0820185020565987,0.253085315227509,0.470799505710602,0.172048002481461,0.0820185020565987,0.172048002481461,0.470799505710602,0.334122627973557,0.0820185020565987,0.334122627973557,0.470799505710602,0.253085315227509,0.0820185020565987,0.253085315227509,0.470799505710602,0.496197253465652,0.470799505710602,0.496197253465652,0.0820185020565987,0.5772345662117,0.470799505710602,0.5772345662117,0.0820185020565987,0.256250828504562,
+0.722437739372253,0.352166086435318,0.778636932373047,0.192940428853035,0.829803347587585,0.318611562252045,0.88935774564743,0.738992631435394,0.0820185020565987,0.738992631435394,0.470799505710602,0.657955348491669,0.0820185020565987,0.657955348491669,0.470799505710602,0.604458034038544,0.652817845344543,0.730445742607117,0.711952805519104,0.571220099925995,0.763538599014282,0.667135298252106,0.819318413734436,0.455045491456985,0.789960622787476,0.557924866676331,0.778636932373047,0.455045491456985,0.907811164855957,0.591162860393524,0.88935774564743,0.269229471683502,0.819318413734436,0.365461260080338,0.763538599014282,0.360713005065918,0.917037904262543,0.410411655902863,0.884744346141815,0.571220099925995,0.763538599014282,0.468340665102005,0.752214908599854,0.604458034038544,0.652817845344543,0.468340665102005,0.633944928646088,0.455045491456985,0.789960622787476,0.352166086435318,0.778636932373047,0.455045491456985,0.66623854637146,0.397116482257843,0.657011806964874,0.468340665102005,0.875937044620514,0.410411655902863,0.884744346141815,0.468340665102005,0.752214908599854,0.365461260080338,0.763538599014282,0.414843380451202,0.470799505710602,0.414843380451202,0.0820185020565987,0.49588069319725,0.470799505710602,0.49588069319725,0.0820185020565987,0.455045491456985,0.907811164855957,0.318611562252045,0.88935774564743,0.455045491456985,0.789960622787476,0.352166086435318,0.778636932373047,0.206235617399216,0.711952805519104,0.331906765699387,0.652817845344543,0.269229471683502,0.819318413734436,0.365461260080338,0.763538599014282,0.526269674301147,0.884744346141815,0.468340665102005,0.875937044620514,0.571220099925995,0.763538599014282,0.468340665102005,0.752214908599854,0.557924866676331,0.778636932373047,0.653840124607086,0.722437739372253,0.591162860393524,0.88935774564743,0.717150568962097,0.829803347587585,0.468340665102005,0.752214908599854,0.365461260080338,0.763538599014282,0.468340665102005,0.633944928646088,0.331906765699387,0.652817845344543
+			} 
+			UVIndex: *124 {
+				a: 2,0,1,3,6,4,5,7,10,8,9,11,12,13,14,15,14,13,16,17,16,13,18,13,19,18,22,20,21,23,26,24,25,27,30,28,29,31,32,33,34,35,34,33,36,37,36,33,38,33,39,38,42,40,41,43,46,44,45,47,50,48,49,51,54,52,53,55,58,56,57,59,62,60,61,63,66,64,65,67,70,68,69,71,74,72,73,75,78,76,77,79,82,80,81,83,86,84,85,87,90,88,89,91,94,92,93,95,98,96,97,99,102,100,101,103,106,104,105,107,110,108,109,111
+			} 
+		}
+		LayerElementMaterial: 0 {
+			Version: 101
+			Name: ""
+			MappingInformationType: "AllSame"
+			ReferenceInformationType: "IndexToDirect"
+			Materials: *1 {
+				a: 0
+			} 
+		}
+		Layer: 0 {
+			Version: 100
+			LayerElement:  {
+				Type: "LayerElementNormal"
+				TypedIndex: 0
+			}
+			LayerElement:  {
+				Type: "LayerElementMaterial"
+				TypedIndex: 0
+			}
+			LayerElement:  {
+				Type: "LayerElementUV"
+				TypedIndex: 0
+			}
+		}
+	}
+	Model: 1652490298400, "Model::GUli", "Mesh" {
+		Version: 232
+		Properties70:  {
+			P: "RotationPivot", "Vector3D", "Vector", "",-7.11142802238464,88.4437255859375,53.7304210662842
+			P: "ScalingPivot", "Vector3D", "Vector", "",-7.11142802238464,88.4437255859375,53.7304210662842
+			P: "RotationActive", "bool", "", "",1
+			P: "InheritType", "enum", "", "",1
+			P: "ScalingMax", "Vector3D", "Vector", "",0,0,0
+			P: "DefaultAttributeIndex", "int", "Integer", "",0
+			P: "Lcl Translation", "Lcl Translation", "", "A",126.421913176337,0,-38.2467724106135
+			P: "Lcl Scaling", "Lcl Scaling", "", "A",2.28623696185218,2.28623696185218,2.28623696185218
+			P: "currentUVSet", "KString", "", "U", "DiffuseUV"
+		}
+		Shading: T
+		Culling: "CullingOff"
+	}
+	Material: 1654595607872, "Material::aiStandardSurface2", "" {
+		Version: 102
+		ShadingModel: "unknown"
+		MultiLayer: 0
+		Properties70:  {
+			P: "Maya", "Compound", "", ""
+			P: "Maya|TypeId", "int", "Integer", "",1138001
+			P: "Maya|outAlpha", "float", "", "",0
+			P: "Maya|normalCamera", "Vector3D", "Vector", "",1,1,1
+			P: "Maya|aiEnableMatte", "bool", "", "",0
+			P: "Maya|aiMatteColor", "Vector3D", "Vector", "",0,0,0
+			P: "Maya|aiMatteColorA", "float", "", "",0
+			P: "Maya|base", "float", "", "",1
+			P: "Maya|baseColor", "Vector3D", "Vector", "",0.930069923400879,0.557995438575745,0.148811042308807
+			P: "Maya|diffuseRoughness", "float", "", "",0
+			P: "Maya|specular", "float", "", "",1
+			P: "Maya|specularColor", "Vector3D", "Vector", "",1,1,1
+			P: "Maya|specularRoughness", "float", "", "",0.2
+			P: "Maya|specularIOR", "float", "", "",1.5
+			P: "Maya|specularAnisotropy", "float", "", "",0
+			P: "Maya|specularRotation", "float", "", "",0
+			P: "Maya|metalness", "float", "", "",0
+			P: "Maya|transmission", "float", "", "",0
+			P: "Maya|transmissionColor", "Vector3D", "Vector", "",1,1,1
+			P: "Maya|transmissionDepth", "float", "", "",0
+			P: "Maya|transmissionScatter", "Vector3D", "Vector", "",0,0,0
+			P: "Maya|transmissionScatterAnisotropy", "float", "", "",0
+			P: "Maya|transmissionDispersion", "float", "", "",0
+			P: "Maya|transmissionExtraRoughness", "float", "", "",0
+			P: "Maya|transmitAovs", "bool", "", "",0
+			P: "Maya|subsurface", "float", "", "",0
+			P: "Maya|subsurfaceColor", "Vector3D", "Vector", "",1,1,1
+			P: "Maya|subsurfaceRadius", "Vector3D", "Vector", "",1,1,1
+			P: "Maya|subsurfaceScale", "float", "", "",1
+			P: "Maya|subsurfaceAnisotropy", "float", "", "",0
+			P: "Maya|subsurfaceType", "enum", "", "",1
+			P: "Maya|sheen", "float", "", "",0
+			P: "Maya|sheenColor", "Vector3D", "Vector", "",1,1,1
+			P: "Maya|sheenRoughness", "float", "", "",0.3
+			P: "Maya|thinWalled", "bool", "", "",0
+			P: "Maya|tangent", "Vector3D", "Vector", "",0,0,0
+			P: "Maya|coat", "float", "", "",0
+			P: "Maya|coatColor", "Vector3D", "Vector", "",1,1,1
+			P: "Maya|coatRoughness", "float", "", "",0.1
+			P: "Maya|coatIOR", "float", "", "",1.5
+			P: "Maya|coatAnisotropy", "float", "", "",0
+			P: "Maya|coatRotation", "float", "", "",0
+			P: "Maya|coatNormal", "Vector3D", "Vector", "",0,0,0
+			P: "Maya|coatAffectColor", "float", "", "",0
+			P: "Maya|coatAffectRoughness", "float", "", "",0
+			P: "Maya|thinFilmThickness", "float", "", "",0
+			P: "Maya|thinFilmIOR", "float", "", "",1.5
+			P: "Maya|emission", "float", "", "",0
+			P: "Maya|emissionColor", "Vector3D", "Vector", "",1,1,1
+			P: "Maya|opacity", "Vector3D", "Vector", "",1,1,1
+			P: "Maya|caustics", "bool", "", "",0
+			P: "Maya|internalReflections", "bool", "", "",1
+			P: "Maya|exitToBackground", "bool", "", "",0
+			P: "Maya|indirectDiffuse", "float", "", "",1
+			P: "Maya|indirectSpecular", "float", "", "",1
+			P: "Maya|dielectricPriority", "int", "Integer", "",0
+			P: "Maya|aovId1", "KString", "", "", ""
+			P: "Maya|id1", "Vector3D", "Vector", "",0,0,0
+			P: "Maya|aovId2", "KString", "", "", ""
+			P: "Maya|id2", "Vector3D", "Vector", "",0,0,0
+			P: "Maya|aovId3", "KString", "", "", ""
+			P: "Maya|id3", "Vector3D", "Vector", "",0,0,0
+			P: "Maya|aovId4", "KString", "", "", ""
+			P: "Maya|id4", "Vector3D", "Vector", "",0,0,0
+			P: "Maya|aovId5", "KString", "", "", ""
+			P: "Maya|id5", "Vector3D", "Vector", "",0,0,0
+			P: "Maya|aovId6", "KString", "", "", ""
+			P: "Maya|id6", "Vector3D", "Vector", "",0,0,0
+			P: "Maya|aovId7", "KString", "", "", ""
+			P: "Maya|id7", "Vector3D", "Vector", "",0,0,0
+			P: "Maya|aovId8", "KString", "", "", ""
+			P: "Maya|id8", "Vector3D", "Vector", "",0,0,0
+			P: "Maya|normalCameraUsedAs", "int", "Integer", "",0
+			P: "Maya|normalCameraFactor", "double", "Number", "",0
+		}
+	}
+	Implementation: 1652851216832, "Implementation::aiStandardSurface2_Implementation", "" {
+		Version: 100
+		Properties70:  {
+			P: "ShaderLanguage", "KString", "", "", "AiOSL"
+			P: "RenderAPI", "KString", "", "", "ARNOLD_SHADER_ID"
+			P: "RenderAPIVersion", "KString", "", "", "5.3"
+			P: "RootBindingName", "KString", "", "", "root"
+		}
+	}
+	BindingTable: 1652409793728, "BindingTable::root 7", "" {
+		Version: 100
+		Properties70:  {
+			P: "TargetName", "KString", "", "", "root"
+			P: "TargetType", "KString", "", "", "shader"
+		}
+		Entry: "Maya|specularIOR", "FbxPropertyEntry", "specularIOR", "FbxSemanticEntry"
+		Entry: "Maya|aiEnableMatte", "FbxPropertyEntry", "aiEnableMatte", "FbxSemanticEntry"
+		Entry: "Maya|id5", "FbxPropertyEntry", "id5", "FbxSemanticEntry"
+		Entry: "Maya|emission", "FbxPropertyEntry", "emission", "FbxSemanticEntry"
+		Entry: "Maya|thinFilmThickness", "FbxPropertyEntry", "thinFilmThickness", "FbxSemanticEntry"
+		Entry: "Maya|coatAffectColor", "FbxPropertyEntry", "coatAffectColor", "FbxSemanticEntry"
+		Entry: "Maya|sheenColor", "FbxPropertyEntry", "sheenColor", "FbxSemanticEntry"
+		Entry: "Maya|aovId2", "FbxPropertyEntry", "aovId2", "FbxSemanticEntry"
+		Entry: "Maya|sheen", "FbxPropertyEntry", "sheen", "FbxSemanticEntry"
+		Entry: "Maya|transmissionDepth", "FbxPropertyEntry", "transmissionDepth", "FbxSemanticEntry"
+		Entry: "Maya|transmissionColor", "FbxPropertyEntry", "transmissionColor", "FbxSemanticEntry"
+		Entry: "Maya|specularColor", "FbxPropertyEntry", "specularColor", "FbxSemanticEntry"
+		Entry: "Maya|id4", "FbxPropertyEntry", "id4", "FbxSemanticEntry"
+		Entry: "Maya|aiMatteColor", "FbxPropertyEntry", "aiMatteColor", "FbxSemanticEntry"
+		Entry: "Maya|sheenRoughness", "FbxPropertyEntry", "sheenRoughness", "FbxSemanticEntry"
+		Entry: "Maya|exitToBackground", "FbxPropertyEntry", "exitToBackground", "FbxSemanticEntry"
+		Entry: "Maya|tangent", "FbxPropertyEntry", "tangent", "FbxSemanticEntry"
+		Entry: "Maya|metalness", "FbxPropertyEntry", "metalness", "FbxSemanticEntry"
+		Entry: "Maya|id7", "FbxPropertyEntry", "id7", "FbxSemanticEntry"
+		Entry: "Maya|baseColor", "FbxPropertyEntry", "baseColor", "FbxSemanticEntry"
+		Entry: "Maya|base", "FbxPropertyEntry", "base", "FbxSemanticEntry"
+		Entry: "Maya|id2", "FbxPropertyEntry", "id2", "FbxSemanticEntry"
+		Entry: "Maya|indirectSpecular", "FbxPropertyEntry", "indirectSpecular", "FbxSemanticEntry"
+		Entry: "Maya|coatNormal", "FbxPropertyEntry", "coatNormal", "FbxSemanticEntry"
+		Entry: "Maya|coatRoughness", "FbxPropertyEntry", "coatRoughness", "FbxSemanticEntry"
+		Entry: "Maya|subsurfaceType", "FbxPropertyEntry", "subsurfaceType", "FbxSemanticEntry"
+		Entry: "Maya|transmissionExtraRoughness", "FbxPropertyEntry", "transmissionExtraRoughness", "FbxSemanticEntry"
+		Entry: "Maya|specular", "FbxPropertyEntry", "specular", "FbxSemanticEntry"
+		Entry: "Maya|aovId7", "FbxPropertyEntry", "aovId7", "FbxSemanticEntry"
+		Entry: "Maya|aovId6", "FbxPropertyEntry", "aovId6", "FbxSemanticEntry"
+		Entry: "Maya|caustics", "FbxPropertyEntry", "caustics", "FbxSemanticEntry"
+		Entry: "Maya|subsurfaceScale", "FbxPropertyEntry", "subsurfaceScale", "FbxSemanticEntry"
+		Entry: "Maya|specularAnisotropy", "FbxPropertyEntry", "specularAnisotropy", "FbxSemanticEntry"
+		Entry: "Maya|diffuseRoughness", "FbxPropertyEntry", "diffuseRoughness", "FbxSemanticEntry"
+		Entry: "Maya|aiMatteColorA", "FbxPropertyEntry", "aiMatteColorA", "FbxSemanticEntry"
+		Entry: "Maya|aovId4", "FbxPropertyEntry", "aovId4", "FbxSemanticEntry"
+		Entry: "Maya|aovId3", "FbxPropertyEntry", "aovId3", "FbxSemanticEntry"
+		Entry: "Maya|internalReflections", "FbxPropertyEntry", "internalReflections", "FbxSemanticEntry"
+		Entry: "Maya|transmissionDispersion", "FbxPropertyEntry", "transmissionDispersion", "FbxSemanticEntry"
+		Entry: "Maya|dielectricPriority", "FbxPropertyEntry", "dielectricPriority", "FbxSemanticEntry"
+		Entry: "Maya|transmission", "FbxPropertyEntry", "transmission", "FbxSemanticEntry"
+		Entry: "Maya|id8", "FbxPropertyEntry", "id8", "FbxSemanticEntry"
+		Entry: "Maya|outAlpha", "FbxPropertyEntry", "outAlpha", "FbxSemanticEntry"
+		Entry: "Maya|emissionColor", "FbxPropertyEntry", "emissionColor", "FbxSemanticEntry"
+		Entry: "Maya|subsurfaceAnisotropy", "FbxPropertyEntry", "subsurfaceAnisotropy", "FbxSemanticEntry"
+		Entry: "Maya|subsurface", "FbxPropertyEntry", "subsurface", "FbxSemanticEntry"
+		Entry: "Maya|specularRoughness", "FbxPropertyEntry", "specularRoughness", "FbxSemanticEntry"
+		Entry: "Maya|coatColor", "FbxPropertyEntry", "coatColor", "FbxSemanticEntry"
+		Entry: "Maya|aovId5", "FbxPropertyEntry", "aovId5", "FbxSemanticEntry"
+		Entry: "Maya|transmissionScatterAnisotropy", "FbxPropertyEntry", "transmissionScatterAnisotropy", "FbxSemanticEntry"
+		Entry: "Maya|indirectDiffuse", "FbxPropertyEntry", "indirectDiffuse", "FbxSemanticEntry"
+		Entry: "Maya|coatIOR", "FbxPropertyEntry", "coatIOR", "FbxSemanticEntry"
+		Entry: "Maya|specularRotation", "FbxPropertyEntry", "specularRotation", "FbxSemanticEntry"
+		Entry: "Maya|coatAffectRoughness", "FbxPropertyEntry", "coatAffectRoughness", "FbxSemanticEntry"
+		Entry: "Maya|coatRotation", "FbxPropertyEntry", "coatRotation", "FbxSemanticEntry"
+		Entry: "Maya|transmitAovs", "FbxPropertyEntry", "transmitAovs", "FbxSemanticEntry"
+		Entry: "Maya|aovId1", "FbxPropertyEntry", "aovId1", "FbxSemanticEntry"
+		Entry: "Maya|coat", "FbxPropertyEntry", "coat", "FbxSemanticEntry"
+		Entry: "Maya|thinWalled", "FbxPropertyEntry", "thinWalled", "FbxSemanticEntry"
+		Entry: "Maya|id6", "FbxPropertyEntry", "id6", "FbxSemanticEntry"
+		Entry: "Maya|id1", "FbxPropertyEntry", "id1", "FbxSemanticEntry"
+		Entry: "Maya|opacity", "FbxPropertyEntry", "opacity", "FbxSemanticEntry"
+		Entry: "Maya|thinFilmIOR", "FbxPropertyEntry", "thinFilmIOR", "FbxSemanticEntry"
+		Entry: "Maya|aovId8", "FbxPropertyEntry", "aovId8", "FbxSemanticEntry"
+		Entry: "Maya|coatAnisotropy", "FbxPropertyEntry", "coatAnisotropy", "FbxSemanticEntry"
+		Entry: "Maya|subsurfaceRadius", "FbxPropertyEntry", "subsurfaceRadius", "FbxSemanticEntry"
+		Entry: "Maya|normalCamera", "FbxPropertyEntry", "normalCamera", "FbxSemanticEntry"
+		Entry: "Maya|subsurfaceColor", "FbxPropertyEntry", "subsurfaceColor", "FbxSemanticEntry"
+		Entry: "Maya|transmissionScatter", "FbxPropertyEntry", "transmissionScatter", "FbxSemanticEntry"
+		Entry: "Maya|id3", "FbxPropertyEntry", "id3", "FbxSemanticEntry"
+	}
+	AnimationStack: 1654537041504, "AnimStack::Take 001", "" {
+		Properties70:  {
+			P: "LocalStop", "KTime", "Time", "",230930790000
+			P: "ReferenceStop", "KTime", "Time", "",230930790000
+		}
+	}
+	AnimationLayer: 1654536482704, "AnimLayer::BaseLayer", "" {
+	}
+}
+
+; Object connections
+;------------------------------------------------------------------
+
+Connections:  {
+	
+	;Model::GUli, Model::RootNode
+	C: "OO",1652490298400,0
+	
+	;AnimLayer::BaseLayer, AnimStack::Take 001
+	C: "OO",1654536482704,1654537041504
+	
+	;Material::aiStandardSurface2, Implementation::aiStandardSurface2_Implementation
+	C: "OO",1654595607872,1652851216832
+	
+	;BindingTable::root 7, Implementation::aiStandardSurface2_Implementation
+	C: "OO",1652409793728,1652851216832
+	
+	;Geometry::, Model::GUli
+	C: "OO",1654537298544,1652490298400
+	
+	;Material::aiStandardSurface2, Model::GUli
+	C: "OO",1654595607872,1652490298400
+}
+;Takes section
+;----------------------------------------------------
+
+Takes:  {
+	Current: "Take 001"
+	Take: "Take 001" {
+		FileName: "Take_001.tak"
+		LocalTime: 0,230930790000
+		ReferenceTime: 0,230930790000
+	}
+}

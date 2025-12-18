@@ -11,50 +11,39 @@ public class MusicManager : MonoBehaviour
 
     private AudioSource audioSource;
     private bool isMuted = false;
+    private bool isStoppedForGameplay = false;
 
     void Awake()
     {
-        // Singleton pattern - only one music manager exists
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject); // Don't destroy when loading new scene
+            DontDestroyOnLoad(gameObject);
             
-            // Setup AudioSource
             audioSource = gameObject.AddComponent<AudioSource>();
             audioSource.playOnAwake = false;
             audioSource.loop = true;
             audioSource.volume = musicVolume;
             
-            // Load saved settings
             LoadMusicSettings();
             
-            // Start playing music if not muted
             if (menuMusic != null)
             {
                 audioSource.clip = menuMusic;
                 if (!isMuted)
                 {
                     audioSource.Play();
-                    Debug.Log("[MusicManager] Menu music started");
-                }
-                else
-                {
-                    Debug.Log("[MusicManager] Music muted from settings");
                 }
             }
         }
         else
         {
-            // Another music manager exists, destroy this one
             Destroy(gameObject);
-            Debug.Log("[MusicManager] Duplicate music manager destroyed");
         }
     }
 
     void LoadMusicSettings()
     {
-        // Load mute state from PlayerPrefs (0 = not muted, 1 = muted)
         isMuted = PlayerPrefs.GetInt("BackgroundMusicMuted", 0) == 1;
     }
 
@@ -67,7 +56,6 @@ public class MusicManager : MonoBehaviour
             if (isMuted)
             {
                 audioSource.Pause();
-                Debug.Log("[MusicManager] Music muted");
             }
             else
             {
@@ -75,7 +63,6 @@ public class MusicManager : MonoBehaviour
                 {
                     audioSource.UnPause();
                 }
-                Debug.Log("[MusicManager] Music unmuted");
             }
         }
     }
@@ -85,7 +72,6 @@ public class MusicManager : MonoBehaviour
         return isMuted;
     }
 
-    // Optional: Methods to control music
     public void SetVolume(float volume)
     {
         musicVolume = Mathf.Clamp01(volume);
@@ -105,10 +91,31 @@ public class MusicManager : MonoBehaviour
 
     public void ResumeMusic()
     {
-        if (audioSource != null && !audioSource.isPlaying && !isMuted)
+        if (audioSource != null && !isMuted)
         {
-            audioSource.UnPause();
+            if (isStoppedForGameplay)
+            {
+                return;
+            }
+            
+            if (!audioSource.isPlaying)
+            {
+                if (audioSource.time > 0)
+                {
+                    audioSource.UnPause();
+                }
+                else
+                {
+                    audioSource.Play();
+                }
+            }
         }
+    }
+
+    public void AllowMusicResume()
+    {
+        isStoppedForGameplay = false;
+        ResumeMusic();
     }
 
     public void StopMusic()
@@ -116,6 +123,12 @@ public class MusicManager : MonoBehaviour
         if (audioSource != null)
         {
             audioSource.Stop();
+            isStoppedForGameplay = true;
         }
+    }
+
+    public bool IsPlaying()
+    {
+        return audioSource != null && audioSource.isPlaying;
     }
 }

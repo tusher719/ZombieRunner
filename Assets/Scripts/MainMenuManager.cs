@@ -8,6 +8,16 @@ public class MainMenuManager : MonoBehaviour
 
     void Start()
     {
+        if (SceneManager.GetActiveScene().name != "Main")
+        {
+            return;
+        }
+        
+        if (MusicManager.Instance != null && !MusicManager.Instance.IsMuted())
+        {
+            MusicManager.Instance.AllowMusicResume();
+        }
+
         if (settingsPanel != null)
         {
             settingsPanel.SetActive(false);
@@ -16,7 +26,6 @@ public class MainMenuManager : MonoBehaviour
 
     public void PlayGame()
     {
-        // Go to Map scene instead of directly to Sandbox
         SceneManager.LoadScene("Map");
     }
 

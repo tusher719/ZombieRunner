@@ -104,8 +104,8 @@ public class DoorUnlockUI : MonoBehaviour
     {
         if (unlockMessagePanel != null && unlockMessageText != null)
         {
-            unlockMessageText.text = "DOOR LOCKED!\nKill all zombies to unlock!";
-            unlockMessageText.color = Color.red;
+            unlockMessageText.text = "DOOR LOCKED!";
+            unlockMessageText.color = Color.white;
             unlockMessagePanel.SetActive(true);
             StartCoroutine(HideMessageAfterDelay(2f));
         }
@@ -116,8 +116,8 @@ public class DoorUnlockUI : MonoBehaviour
         // Show unlock message
         if (unlockMessagePanel != null && unlockMessageText != null)
         {
-            unlockMessageText.text = "DOOR UNLOCKED!\nHead to the exit!";
-            unlockMessageText.color = Color.green;
+            unlockMessageText.text = "DOOR UNLOCKED!";
+            unlockMessageText.color = Color.white;
             unlockMessagePanel.SetActive(true);
         }
 

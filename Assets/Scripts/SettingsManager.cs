@@ -48,7 +48,6 @@ public class SettingsManager : MonoBehaviour
         // Load UI music setting
         uiMusicOn = PlayerPrefs.GetInt("UIMusicMuted", 0) == 0;
         
-        Debug.Log($"[SettingsManager] Settings loaded - BG Music: {(bgMusicOn ? "ON" : "OFF")}, UI Music: {(uiMusicOn ? "ON" : "OFF")}");
     }
 
     void UpdateTogglesVisual()
@@ -108,7 +107,6 @@ public class SettingsManager : MonoBehaviour
             MusicManager.Instance.SetMuted(!bgMusicOn);
         }
         
-        Debug.Log($"[SettingsManager] Background music toggled: {(bgMusicOn ? "ON" : "OFF")}");
     }
 
     void OnUIMusicToggleClicked()
@@ -124,7 +122,6 @@ public class SettingsManager : MonoBehaviour
         
         // UI music control (for future use)
         
-        Debug.Log($"[SettingsManager] UI music toggled: {(uiMusicOn ? "ON" : "OFF")}");
     }
 
     public void SaveSettings()
@@ -141,7 +138,6 @@ public class SettingsManager : MonoBehaviour
         // Save to disk
         PlayerPrefs.Save();
         
-        Debug.Log($"[SettingsManager] Settings saved! BG Music: {(bgMusicOn ? "ON" : "OFF")}, UI Music: {(uiMusicOn ? "ON" : "OFF")}");
         
         // Optional: Show feedback
         // StartCoroutine(ShowSaveText());
