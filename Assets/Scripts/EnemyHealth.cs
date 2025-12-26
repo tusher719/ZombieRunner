@@ -72,6 +72,6 @@ public class EnemyHealth : MonoBehaviour
             GameManager.Instance.ZombieKilled();
         }
 
-        Destroy(gameObject, 1f);
+        Destroy(gameObject, 3f);
     }
 }

@@ -32,7 +32,6 @@ public class HealthDisplay : MonoBehaviour
 
         if (playerHealth == null)
         {
-            Debug.LogError("PlayerHealth not found!");
             return;
         }
 

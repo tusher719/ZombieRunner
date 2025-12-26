@@ -73,25 +73,25 @@ public class LevelButton : MonoBehaviour
             unlockIndicator.SetActive(showUnlockIndicator);
         }
 
-        // 5. Base label - শুধু Level 1 এ always visible
+        // 5. Base label
         if (baseLabel != null)
         {
             baseLabel.SetActive(level == 1);
         }
 
-        // 6. Lab label - শুধু Level 5 এ always visible
+        // 6. Lab label
         if (labLabel != null)
         {
             labLabel.SetActive(level == 5);
         }
 
-        // 7. Completed icon - completed হলে show
+        // 7. Completed icon
         if (completedIcon != null)
         {
             completedIcon.SetActive(completed);
         }
 
-        // 8. Score text - শুধু COMPLETED levels এ actual score show করবে
+        // 8. Score text
         if (levelScoreText != null)
         {
             if (completed && score > 0)
